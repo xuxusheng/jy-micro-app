@@ -1,4 +1,8 @@
-import { useCallback, useState, useMemo } from 'react'
+import {
+  useCallback,
+  useState
+  //useMemo
+} from 'react'
 import {
   addEdge,
   applyEdgeChanges,
@@ -9,10 +13,12 @@ import {
   Controls,
   Panel,
   BackgroundVariant,
-  Background,
-  NodeChange
+  Background
+  // NodeChange
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
+import IconNode from './Nodes/IconNode'
+import { Link } from 'react-router-dom'
 
 // import TextUpdaterNode from './TextUpdaterNode.jsx'
 // import './text-updater-node.css'
@@ -23,15 +29,15 @@ const initialNodes = [
   {
     id: '1',
     position: { x: 250, y: 25 },
-    style: { backgroundColor: '#6ede87', color: 'white' },
-    data: { label: 1 }
+    data: { label: 'start initial', icon: 'ok' },
+    type: 'iconNode'
   },
   {
     id: '2',
     // you can also pass a React component as a label
-    data: { label: 2 },
+    data: { label: 'step 1', icon: 'smile' },
     position: { x: 100, y: 125 },
-    style: { backgroundColor: '#ff0072', color: 'white' }
+    type: 'iconNode'
   },
   {
     id: '3',
@@ -67,7 +73,7 @@ const rfStyle = {
 
 const panOnDrag = [1, 2]
 
-// const nodeTypes = { textUpdater: TextUpdaterNode, counterNode: CounterNode }
+const nodeTypes = { iconNode: IconNode }
 
 // const edgeTypes = {
 //   'custom-edge': CustomEdge
@@ -120,7 +126,7 @@ function Flow() {
       // edgeTypes={edgeTypes}
       panOnDrag={panOnDrag}
       selectionMode={SelectionMode.Partial}
-      // nodeTypes={nodeTypes}
+      nodeTypes={nodeTypes}
       style={rfStyle}
     >
       <MiniMap
@@ -133,7 +139,7 @@ function Flow() {
       <Background color="#ccc" variant={variant} />
 
       <Panel>
-        <div>variant:</div>
+        {/*<div>variant:</div>*/}
         <button onClick={() => setVariant(BackgroundVariant.Dots)}>dots</button>
         <button onClick={() => setVariant(BackgroundVariant.Lines)}>
           lines
@@ -143,12 +149,14 @@ function Flow() {
         </button>
       </Panel>
 
-      <Panel position="top-left">top-left</Panel>
-      <Panel position="top-center">top-center</Panel>
-      <Panel position="top-right">top-right</Panel>
-      <Panel position="bottom-left">bottom-left</Panel>
-      <Panel position="bottom-center">bottom-center</Panel>
-      <Panel position="bottom-right">bottom-right</Panel>
+      {/*<Panel position="top-left">top-left</Panel>*/}
+      {/*<Panel position="top-center">top-center</Panel>*/}
+      {/*<Panel position="top-right">top-right</Panel>*/}
+      {/*<Panel position="bottom-left">bottom-left</Panel>*/}
+      {/*<Panel position="bottom-center">bottom-center</Panel>*/}
+      <Panel position="top-right">
+        <Link to={'/about'}>About</Link>
+      </Panel>
     </ReactFlow>
   )
 }

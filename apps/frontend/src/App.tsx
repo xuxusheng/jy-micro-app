@@ -1,13 +1,14 @@
 import React from 'react'
 import './App.css'
-import Flow from './components/Flow'
+import { RouterProvider } from 'react-router-dom'
+import router from './routers'
 
 function App() {
   return (
     <div className="App">
-      <div style={{ width: '100vw', height: '100vh' }}>
-        <Flow />
-      </div>
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <RouterProvider router={router} />
+      </React.Suspense>
     </div>
   )
 }
