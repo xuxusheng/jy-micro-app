@@ -1,0 +1,32 @@
+.container {
+    height: 30px;
+    border: 1px solid #eee;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    background-color: #6ede87;
+    width: 150px;
+    justify-content: center;
+    gap: 16px;
+    align-items: center;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    background-size: cover;
+    background: url("../../../public/flow/ok.svg") no-repeat center;
+}
+.icon.ok {
+    background: url("../../../public/flow/ok.svg") no-repeat center;
+}
+
+.icon.smile {
+    background: url("../../../public/flow/emoji-smile.svg") no-repeat center;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
