@@ -1,12 +1,13 @@
 import { FC, useMemo, useState } from 'react'
 import { workflowApi } from '../../api/workflow'
 import { Node } from '../../interface/node'
+import FlowLayout from '../../components/FlowLayout'
 
 type NodeWithChildren = Node & {
   childrenNodeIds?: string[]
 }
 
-const workflow = workflowApi.demo01()
+// const workflow = workflowApi.demo01()
 
 export const Demo01Page: FC = () => {
   const [workflow] = useState(workflowApi.demo01())
@@ -46,9 +47,11 @@ export const Demo01Page: FC = () => {
     return map
   }, [workflow])
 
+  console.log(nodeMap, rootNode)
+
   return (
-    <div>
-      <h1>Demo01</h1>
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <FlowLayout></FlowLayout>
     </div>
   )
 }
