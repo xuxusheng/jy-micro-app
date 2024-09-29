@@ -12,6 +12,8 @@ import {
 } from '@xyflow/react'
 
 import '@xyflow/react/dist/style.css'
+import { nodeTypes } from './Nodes'
+import { edgeTypes } from './Edges'
 
 const elk = new ELK()
 
@@ -39,8 +41,8 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
       sourcePosition: isHorizontal ? 'right' : 'bottom',
 
       // Hardcode a width and height for elk to use when layouting.
-      width: 150,
-      height: 50
+      width: 100,
+      height: 24
     })),
     edges: edges
   }
@@ -60,7 +62,13 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
     .catch(console.error)
 }
 
-function LayoutFlow() {
+function LayoutFlow({
+  initialNodes,
+  initialEdges
+}: {
+  initialNodes: any
+  initialEdges: any
+}) {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const { fitView } = useReactFlow()
@@ -100,6 +108,8 @@ function LayoutFlow() {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       fitView
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
     >
       <Panel position="top-right">
         <button onClick={() => onLayout({ direction: 'DOWN' })}>
@@ -114,8 +124,4 @@ function LayoutFlow() {
   )
 }
 
-export default () => (
-  <ReactFlowProvider>
-    <LayoutFlow />
-  </ReactFlowProvider>
-)
+export default LayoutFlow

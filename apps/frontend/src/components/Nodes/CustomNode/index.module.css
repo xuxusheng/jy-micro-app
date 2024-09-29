@@ -1,0 +1,53 @@
+.container {
+    height: 24px;
+    border: 1px solid #28fffe;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+}
+
+.container.failed {
+    border-color: #fff;
+    background-color: #d70023;
+}
+
+.container.success {
+    border-color: #fff;
+    background-color: #51cb76;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+.icon.ok {
+    background: url("../../../../public/flow/ok.svg") no-repeat center;
+    background-size: contain;
+}
+
+.icon.smile {
+    background: url("../../../../public/flow/emoji-smile.svg") no-repeat center;
+    background-size: contain;
+}
+
+.icon.default {
+    background: url("../../../../public/flow/default-c.png") no-repeat center;
+    background-size: contain;
+}
+
+.icon.success {
+    background: url("../../../../public/flow/success-c.png") no-repeat center;
+    background-size: contain;
+}
+
+.icon.failed {
+    background: url("../../../../public/flow/failed-c.png") no-repeat center;
+    background-size: contain;
+}
+
+.label {
+    font-size: 14px;
+    color: #fff;
+}

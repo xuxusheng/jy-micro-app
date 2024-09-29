@@ -13,10 +13,10 @@ export enum NodeStatus {
 
 export enum NodeType {
   // 举几个例子
-  Default = 'default',
-  Start = 'start',
-  End = 'end',
-  Task = 'task'
+  Default = 'DEFAULT',
+  Start = 'START',
+  End = 'END',
+  Task = 'TASK'
 }
 
 // 流程图中节点

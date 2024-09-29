@@ -34,8 +34,15 @@ class WorkflowApi {
           id: '04',
           title: '04',
           type: NodeType.Task,
-          status: NodeStatus.Default,
+          status: NodeStatus.Failed,
           parentNodeIds: ['02', '03']
+        },
+        {
+          id: '05',
+          title: '05',
+          type: NodeType.End,
+          status: NodeStatus.Default,
+          parentNodeIds: ['03', '04']
         }
       ]
     }
