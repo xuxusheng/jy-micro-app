@@ -1,9 +1,8 @@
 import { initialNodes, initialEdges } from './nodes-edges.js'
 import ELK from 'elkjs/lib/elk.bundled.js'
-import React, { useCallback, useLayoutEffect } from 'react'
+import React, { useCallback, useLayoutEffect, useState } from 'react'
 import {
   ReactFlow,
-  ReactFlowProvider,
   addEdge,
   Panel,
   useNodesState,
@@ -14,6 +13,7 @@ import {
 import '@xyflow/react/dist/style.css'
 import { nodeTypes } from './Nodes'
 import { edgeTypes } from './Edges'
+import { Modal } from 'antd'
 
 const elk = new ELK()
 
@@ -73,6 +73,17 @@ function LayoutFlow({
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const { fitView } = useReactFlow()
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalDescription, setModalDescription] = useState('')
+
+  const handleOk = () => {
+    setIsModalOpen(false)
+  }
+
+  const handleCancel = () => {
+    setIsModalOpen(false)
+  }
+
   const onConnect = useCallback(
     (params: any) => setEdges((eds) => addEdge(params, eds) as any),
     []
@@ -110,6 +121,12 @@ function LayoutFlow({
       fitView
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
+      onNodeClick={(event, node: any) => {
+        if (node.data.hintMode === 'modal') {
+          setIsModalOpen(true)
+          setModalDescription(node.data.hint)
+        }
+      }}
     >
       <Panel position="top-right">
         <button onClick={() => onLayout({ direction: 'DOWN' })}>
@@ -120,6 +137,16 @@ function LayoutFlow({
           horizontal layout
         </button>
       </Panel>
+
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        destroyOnClose={true}
+      >
+        <p>{modalDescription}</p>
+      </Modal>
     </ReactFlow>
   )
 }

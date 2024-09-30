@@ -1,18 +1,10 @@
 import Styles from './index.module.css'
 import { Node } from '../../../interface/node'
+import React from 'react'
 
-const CustomNode = ({
-  data,
-  onClick
-}: {
-  data: Node
-  onClick?: () => void
-}) => {
+const CustomNode = ({ data }: { data: Node }) => {
   return (
-    <div
-      className={Styles.container + ' ' + Styles[data.status]}
-      onClick={onClick}
-    >
+    <div className={Styles.container + ' ' + Styles[data.status]}>
       <div className={Styles.icon + ' ' + Styles[data.status]}></div>
       <div className={Styles.label}>{data.title}</div>
     </div>
