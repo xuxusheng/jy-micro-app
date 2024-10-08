@@ -14,6 +14,7 @@ import '@xyflow/react/dist/style.css'
 import { nodeTypes } from './Nodes'
 import { edgeTypes } from './Edges'
 import { Modal } from 'antd'
+import { NodeStatus } from '../interface/node'
 
 const elk = new ELK()
 
@@ -74,10 +75,28 @@ function LayoutFlow({
   const { fitView } = useReactFlow()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalDescription, setModalDescription] = useState('')
+  const [currentNode, setCurrentNode] = useState<any>(null)
 
   const handleOk = () => {
     setIsModalOpen(false)
+    setNodes((ns) => {
+      const node: any = ns.find((n: any) => n.data.id === currentNode.data.id)
+      if (node) {
+        node.data.status = NodeStatus.Failed
+      }
+      return [...ns]
+    })
+
+    for (let n of currentNode.data.childrenNodeIds) {
+      setEdges((es) => {
+        const _id = `${currentNode.data.id}-${n}`
+        const edge: any = es.find((e: any) => e.id === _id)
+        if (edge) {
+          edge.animated = true
+        }
+        return [...es]
+      })
+    }
   }
 
   const handleCancel = () => {
@@ -108,7 +127,7 @@ function LayoutFlow({
 
   // Calculate the initial layout on mount.
   useLayoutEffect(() => {
-    onLayout({ direction: 'RIGHT', useInitialNodes: true })
+    onLayout({ direction: 'DOWN', useInitialNodes: true })
   }, [])
 
   return (
@@ -124,7 +143,8 @@ function LayoutFlow({
       onNodeClick={(event, node: any) => {
         if (node.data.hintMode === 'modal') {
           setIsModalOpen(true)
-          setModalDescription(node.data.hint)
+          setCurrentNode(node)
+          console.log('node', node)
         }
       }}
     >
@@ -145,7 +165,7 @@ function LayoutFlow({
         onCancel={handleCancel}
         destroyOnClose={true}
       >
-        <p>{modalDescription}</p>
+        <p>{currentNode?.data?.hint}</p>
       </Modal>
     </ReactFlow>
   )

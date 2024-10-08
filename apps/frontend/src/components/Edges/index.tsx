@@ -35,7 +35,8 @@ const BiDirectionalEdge = ({
   targetY,
   sourcePosition,
   targetPosition,
-  markerEnd
+  markerEnd,
+  animated
 }: EdgeProps) => {
   const isBiDirectionEdge = useStore((s: ReactFlowState) => {
     const edgeExists = s.edges.some(
@@ -63,6 +64,8 @@ const BiDirectionalEdge = ({
   } else {
     ;[path] = getBezierPath(edgePathParams)
   }
+
+  console.log(animated)
 
   return (
     <BaseEdge path={path} markerEnd={markerEnd} style={{ stroke: '#3d989f' }} />

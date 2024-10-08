@@ -15,7 +15,7 @@ const DefaultNode = ({
     <>
       <CustomHandle
         type="target"
-        position={Position.Left}
+        position={Position.Top}
         isConnectable={isConnectable}
       />
 
@@ -23,7 +23,7 @@ const DefaultNode = ({
 
       <CustomHandle
         type="source"
-        position={Position.Right}
+        position={Position.Bottom}
         isConnectable={isConnectable}
       />
     </>

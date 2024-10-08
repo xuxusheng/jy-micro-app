@@ -17,7 +17,7 @@ const StartNode = ({
 
       <CustomHandle
         type="source"
-        position={Position.Right}
+        position={Position.Bottom}
         isConnectable={isConnectable}
       />
     </>

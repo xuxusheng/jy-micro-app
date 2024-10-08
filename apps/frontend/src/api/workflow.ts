@@ -40,9 +40,51 @@ class WorkflowApi {
         {
           id: '05',
           title: '05',
-          type: NodeType.End,
+          type: NodeType.Task,
           status: NodeStatus.Default,
           parentNodeIds: ['03', '04']
+        },
+        {
+          id: '06',
+          title: '06',
+          type: NodeType.Task,
+          status: NodeStatus.Default,
+          parentNodeIds: ['01', '03', '04', '05']
+        },
+        {
+          id: '07',
+          title: '07',
+          type: NodeType.Task,
+          status: NodeStatus.Default,
+          parentNodeIds: ['02', '03', '04', '05']
+        },
+        {
+          id: '08',
+          title: '08',
+          type: NodeType.Task,
+          status: NodeStatus.Default,
+          parentNodeIds: ['05', '06']
+        },
+        {
+          id: '09',
+          title: '09',
+          type: NodeType.Task,
+          status: NodeStatus.Default,
+          parentNodeIds: ['07', '06', '02']
+        },
+        {
+          id: '10',
+          title: '10',
+          type: NodeType.Task,
+          status: NodeStatus.Default,
+          parentNodeIds: ['07', '08', '01']
+        },
+        {
+          id: '11',
+          title: '11',
+          type: NodeType.Task,
+          status: NodeStatus.Default,
+          parentNodeIds: ['04', '03', '08']
         }
       ]
     }

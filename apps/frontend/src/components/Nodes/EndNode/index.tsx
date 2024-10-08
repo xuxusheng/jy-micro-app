@@ -15,7 +15,7 @@ const EndNode = ({
     <>
       <CustomHandle
         type="target"
-        position={Position.Left}
+        position={Position.Top}
         isConnectable={isConnectable}
       />
 
