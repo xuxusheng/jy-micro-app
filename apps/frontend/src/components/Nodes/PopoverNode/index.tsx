@@ -1,10 +1,10 @@
-import { Handle, Position } from '@xyflow/react'
+import { Position } from '@xyflow/react'
 
 import { NodeProps } from '@xyflow/react/dist/esm/types'
 import CustomNode from '../CustomNode'
 import CustomHandle from '../../Handle'
 
-const EndNode = ({
+const StartNode = ({
   isConnectable,
   data
 }: NodeProps & {
@@ -20,8 +20,14 @@ const EndNode = ({
       />
 
       <CustomNode data={data}></CustomNode>
+
+      <CustomHandle
+        type="source"
+        position={Position.Bottom}
+        isConnectable={isConnectable}
+      />
     </>
   )
 }
 
-export default EndNode
+export default StartNode

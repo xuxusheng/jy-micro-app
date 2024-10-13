@@ -11,8 +11,7 @@ export const CustomHandle = ({
     position={position}
     isConnectable={isConnectable}
     style={{
-      backgroundColor: 'transparent',
-      borderColor: '#3a8d94'
+      opacity: 0
     }}
   />
 )

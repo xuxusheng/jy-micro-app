@@ -25,8 +25,8 @@ const elk = new ELK()
 // - https://www.eclipse.org/elk/reference/options.html
 const elkOptions = {
   'elk.algorithm': 'layered',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '100',
-  'elk.spacing.nodeNode': '80'
+  'elk.layered.spacing.nodeNodeBetweenLayers': 100,
+  'elk.spacing.nodeNode': 100
 }
 
 const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
@@ -40,10 +40,9 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
       // direction.
       targetPosition: isHorizontal ? 'left' : 'top',
       sourcePosition: isHorizontal ? 'right' : 'bottom',
-
       // Hardcode a width and height for elk to use when layouting.
-      width: 100,
-      height: 24
+      width: node.__rf?.width ?? 80,
+      height: node.__rf?.height ?? 24
     })),
     edges: edges
   }
@@ -55,7 +54,10 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
         ...node,
         // React Flow expects a position property on the node instead of `x`
         // and `y` fields.
-        position: { x: node.x, y: node.y }
+        position: {
+          x: node.x - node.width / 2 + Math.random() / 1000,
+          y: node.y - node.height / 2
+        }
       })),
 
       edges: layoutedGraph.edges
@@ -82,7 +84,7 @@ function LayoutFlow({
     setNodes((ns) => {
       const node: any = ns.find((n: any) => n.data.id === currentNode.data.id)
       if (node) {
-        node.data.status = NodeStatus.Failed
+        node.data.status = NodeStatus.Success
       }
       return [...ns]
     })
@@ -139,7 +141,6 @@ function LayoutFlow({
       onEdgesChange={onEdgesChange}
       fitView
       nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
       onNodeClick={(event, node: any) => {
         if (node.data.hintMode === 'modal') {
           setIsModalOpen(true)

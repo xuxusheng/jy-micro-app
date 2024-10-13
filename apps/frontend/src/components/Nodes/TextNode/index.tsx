@@ -1,10 +1,11 @@
-import { Position } from '@xyflow/react'
+import { Handle, Position } from '@xyflow/react'
 
+import Styles from './index.module.css'
 import { NodeProps } from '@xyflow/react/dist/esm/types'
 import CustomNode from '../CustomNode'
 import CustomHandle from '../../Handle'
 
-const StartNode = ({
+const TaskNode = ({
   isConnectable,
   data
 }: NodeProps & {
@@ -13,6 +14,12 @@ const StartNode = ({
 }) => {
   return (
     <>
+      <CustomHandle
+        type="target"
+        position={Position.Top}
+        isConnectable={isConnectable}
+      />
+
       <CustomNode data={data}></CustomNode>
 
       <CustomHandle
@@ -24,4 +31,4 @@ const StartNode = ({
   )
 }
 
-export default StartNode
+export default TaskNode

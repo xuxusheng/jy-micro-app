@@ -1,5 +1,5 @@
 .container {
-    height: 24px;
+    min-height: 24px;
     border: 1px solid #28fffe;
     border-radius: 5px;
     display: flex;
@@ -8,9 +8,14 @@
     align-items: center;
 }
 
-.container.failed {
+.container.TEXT {
     border-color: #fff;
-    background-color: #d70023;
+    background-color: #d75d00;
+}
+
+.container.POPOVER {
+    border-color: #fff;
+    background-color: #8be6a5;
 }
 
 .container.success {
@@ -22,15 +27,7 @@
     width: 24px;
     height: 24px;
 }
-.icon.ok {
-    background: url("../../../../public/flow/ok.svg") no-repeat center;
-    background-size: contain;
-}
 
-.icon.smile {
-    background: url("../../../../public/flow/emoji-smile.svg") no-repeat center;
-    background-size: contain;
-}
 
 .icon.default {
     background: url("../../../../public/flow/default-c.png") no-repeat center;
@@ -42,10 +39,7 @@
     background-size: contain;
 }
 
-.icon.failed {
-    background: url("../../../../public/flow/failed-c.png") no-repeat center;
-    background-size: contain;
-}
+
 
 .label {
     font-size: 14px;

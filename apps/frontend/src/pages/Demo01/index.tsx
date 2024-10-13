@@ -72,7 +72,7 @@ export const Demo01Page: FC = () => {
           id: `${sourceId}-${v}`,
           source: sourceId,
           target: v,
-          type: 'bidirectional',
+          type: 'smoothstep',
           markerEnd: { type: MarkerType.ArrowClosed, color: '#49e6ef' }
         })
         getEdge(v)

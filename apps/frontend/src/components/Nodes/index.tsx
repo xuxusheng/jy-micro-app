@@ -1,16 +1,14 @@
 import IconNode from './IconNode'
-import StartNode from './StartNode'
 import { NodeType } from '../../interface/node'
 import DefaultNode from './DefaultNode'
-import TaskNode from './TaskNode'
-import EndNode from './EndNode'
+import PopoverNode from './PopoverNode'
+import TextNode from './TextNode'
 
 export * from './IconNode'
 
 export const nodeTypes = {
   iconNode: IconNode,
-  [NodeType.Start]: StartNode,
   [NodeType.Default]: DefaultNode,
-  [NodeType.Task]: TaskNode,
-  [NodeType.End]: EndNode
+  [NodeType.Text]: TextNode,
+  [NodeType.Popover]: PopoverNode
 }

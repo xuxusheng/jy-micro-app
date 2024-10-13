@@ -5,18 +5,15 @@ export interface Workflow {
 }
 
 export enum NodeStatus {
-  // 举几个例子
   Default = 'default',
-  Success = 'success',
-  Failed = 'failed'
+  Success = 'success'
 }
 
 export enum NodeType {
   // 举几个例子
-  Default = 'DEFAULT',
-  Start = 'START',
-  End = 'END',
-  Task = 'TASK'
+  Default = 'DEFAULT', // 普通节点
+  Text = 'TEXT', // 文本节点
+  Popover = 'POPOVER' // 气泡节点
 }
 
 // 流程图中节点
@@ -26,8 +23,12 @@ export interface Node {
   type: NodeType // 节点类型
   status: NodeStatus // 节点状态
 
-  hint?: string // 提示信息
-  hintMode?: 'popover' | 'drawer' | 'modal' // 提示信息展示的方式，弹窗、抽屉，等等
+  text?: string // 节点旁边文本
+
+  active: boolean // 节点激活状态
+
+  isSingleSuccess?: boolean // 是否选择一个完成
 
   parentNodeIds?: string[] // 父节点 ID 列表
+  childrenNodeIds?: string[] // 子节点 ID 列表
 }

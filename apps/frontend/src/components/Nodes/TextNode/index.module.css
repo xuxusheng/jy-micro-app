@@ -18,6 +18,11 @@
     background-size: contain;
 }
 
+.icon.smile {
+    background: url("../../../../public/flow/emoji-smile.svg") no-repeat center;
+    background-size: contain;
+}
+
 .icon.default {
     background: url("../../../../public/flow/default-c.png") no-repeat center;
     background-size: contain;
@@ -31,15 +36,6 @@
 .icon.failed {
     background: url("../../../../public/flow/failed-c.png") no-repeat center;
     background-size: contain;
-}
-
-.icon.start {
-    background: url("../../../../public/flow/start.png") no-repeat center;
-    background-size: contain;
-}
-
-.icon.smile {
-    background: url("../../../../public/flow/emoji-smile.svg") no-repeat center;
 }
 
 .label {
