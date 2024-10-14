@@ -52,13 +52,18 @@ export const Demo01Page: FC = () => {
 
   const nodes = useMemo(() => {
     const all: any[] = []
+    console.log(nodeMap)
     nodeMap?.forEach((v) => {
       const data = v
 
       all.push({
         id: v.id,
         type: v.type,
-        data
+        data,
+        position: {
+          x: 0,
+          y: 0
+        }
       })
     })
     return all
@@ -66,19 +71,18 @@ export const Demo01Page: FC = () => {
 
   const edges = useMemo(() => {
     const all: any[] = []
-    const getEdge = (sourceId: any) => {
-      nodeMap.get(sourceId)?.childrenNodeIds?.map((v) => {
+    nodeMap.forEach((v) => {
+      v.childrenNodeIds?.forEach((v1) => {
         all.push({
-          id: `${sourceId}-${v}`,
-          source: sourceId,
-          target: v,
+          id: `${v.id}-${v1}`,
+          source: v.id,
+          target: v1,
           type: 'smoothstep',
           markerEnd: { type: MarkerType.ArrowClosed, color: '#49e6ef' }
         })
-        getEdge(v)
       })
-    }
-    getEdge((rootNode as Node)?.id)
+    })
+
     return all
   }, [nodeMap, rootNode])
 

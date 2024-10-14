@@ -11,7 +11,9 @@ class WorkflowApi {
           type: NodeType.Default,
           status: NodeStatus.Default,
           active: true,
-          parentNodeIds: []
+          parentNodeIds: [],
+          width: 300,
+          height: 40
         },
         {
           id: 'note',
@@ -20,7 +22,9 @@ class WorkflowApi {
           active: true,
           status: NodeStatus.Default,
           text: '处理过程中监盘人员密切监视阀冷系统运行情况（阀出水温度、阀进水温度、外冷喷淋泵、冷却塔风机状态），若阀进水温度持续上升，值长立即将阀冷系统运行情况及处理情况汇报站部及公司领导、调度，经同意后向国调申请降低直流系统功率。',
-          parentNodeIds: ['ccp']
+          parentNodeIds: ['ccp'],
+          width: 120,
+          height: 40
         },
         {
           id: 'report',
@@ -28,7 +32,9 @@ class WorkflowApi {
           type: NodeType.Default,
           status: NodeStatus.Default,
           active: true,
-          parentNodeIds: ['note']
+          parentNodeIds: ['note'],
+          width: 80,
+          height: 40
         },
         {
           id: 'reportStation',
@@ -37,7 +43,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           text: '可标记状态为成功',
           parentNodeIds: ['report'],
-          active: true
+          active: true,
+          width: 120,
+          height: 40
         },
         {
           id: 'reportScheduling',
@@ -46,7 +54,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           parentNodeIds: ['report'],
           text: '可标记状态为已完成，同级两个节点都需要标记为已完成后才能继续',
-          active: true
+          active: true,
+          width: 120,
+          height: 40
         },
         {
           id: 'monitorClosely',
@@ -54,7 +64,9 @@ class WorkflowApi {
           type: NodeType.Default,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['reportStation', 'reportScheduling']
+          parentNodeIds: ['reportStation', 'reportScheduling'],
+          width: 120,
+          height: 40
         },
         {
           id: 'dataComparison',
@@ -62,7 +74,9 @@ class WorkflowApi {
           type: NodeType.Default,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['monitorClosely']
+          parentNodeIds: ['monitorClosely'],
+          width: 120,
+          height: 40
         },
         {
           id: 'longitudinalComparison',
@@ -71,7 +85,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           text: '可标记状态为已完成，同级两个节点都需要标记为已完成后才能继续',
           active: false,
-          parentNodeIds: ['dataComparison']
+          parentNodeIds: ['dataComparison'],
+          width: 200,
+          height: 40
         },
         {
           id: 'horizontalComparison',
@@ -80,7 +96,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           text: '可标记状态为已完成，同级两个节点都需要标记为已完成后才能继续',
           active: false,
-          parentNodeIds: ['dataComparison']
+          parentNodeIds: ['dataComparison'],
+          width: 200,
+          height: 40
         },
         {
           id: 'checkEquipment',
@@ -88,7 +106,9 @@ class WorkflowApi {
           type: NodeType.Default,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['longitudinalComparison', 'horizontalComparison']
+          parentNodeIds: ['longitudinalComparison', 'horizontalComparison'],
+          width: 120,
+          height: 40
         },
         {
           id: 'checkCoolingEquipment',
@@ -96,7 +116,9 @@ class WorkflowApi {
           type: NodeType.Popover,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['checkEquipment']
+          parentNodeIds: ['checkEquipment'],
+          width: 140,
+          height: 40
         },
         {
           id: 'checkExternalCoolingEquipment',
@@ -104,7 +126,9 @@ class WorkflowApi {
           type: NodeType.Popover,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['checkEquipment']
+          parentNodeIds: ['checkEquipment'],
+          width: 140,
+          height: 40
         },
         {
           id: 'checkValveHall',
@@ -112,7 +136,9 @@ class WorkflowApi {
           type: NodeType.Popover,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['checkEquipment']
+          parentNodeIds: ['checkEquipment'],
+          width: 140,
+          height: 40
         },
         {
           id: 'summary',
@@ -124,7 +150,9 @@ class WorkflowApi {
             'checkCoolingEquipment',
             'checkExternalCoolingEquipment',
             'checkValveHall'
-          ]
+          ],
+          width: 120,
+          height: 40
         },
         {
           id: 'analysis',
@@ -132,7 +160,9 @@ class WorkflowApi {
           type: NodeType.Default,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['summary']
+          parentNodeIds: ['summary'],
+          width: 120,
+          height: 40
         },
         {
           id: 'analysis1',
@@ -142,7 +172,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           active: false,
           parentNodeIds: ['analysis'],
-          isSingleSuccess: true
+          isSingleSuccess: true,
+          width: 200,
+          height: 200
         },
         {
           id: 'analysis2',
@@ -152,7 +184,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           active: false,
           parentNodeIds: ['analysis'],
-          isSingleSuccess: true
+          isSingleSuccess: true,
+          width: 200,
+          height: 200
         },
         {
           id: 'analysis3',
@@ -162,7 +196,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           active: false,
           parentNodeIds: ['analysis'],
-          isSingleSuccess: true
+          isSingleSuccess: true,
+          width: 200,
+          height: 200
         },
         {
           id: 'analysis4',
@@ -172,7 +208,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           active: false,
           parentNodeIds: ['analysis'],
-          isSingleSuccess: true
+          isSingleSuccess: true,
+          width: 200,
+          height: 200
         },
         {
           id: 'analysis5',
@@ -182,7 +220,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           active: false,
           parentNodeIds: ['analysis'],
-          isSingleSuccess: true
+          isSingleSuccess: true,
+          width: 200,
+          height: 200
         },
         {
           id: 'analysis6',
@@ -192,7 +232,9 @@ class WorkflowApi {
           status: NodeStatus.Default,
           active: false,
           parentNodeIds: ['analysis'],
-          isSingleSuccess: true
+          isSingleSuccess: true,
+          width: 200,
+          height: 200
         },
         {
           id: 'reviewReport',
@@ -207,7 +249,9 @@ class WorkflowApi {
             'analysis4',
             'analysis5',
             'analysis6'
-          ]
+          ],
+          width: 160,
+          height: 40
         },
         {
           id: 'station',
@@ -215,7 +259,9 @@ class WorkflowApi {
           type: NodeType.Popover,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['reviewReport']
+          parentNodeIds: ['reviewReport'],
+          width: 120,
+          height: 40
         },
         {
           id: 'province',
@@ -223,7 +269,9 @@ class WorkflowApi {
           type: NodeType.Popover,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['reviewReport']
+          parentNodeIds: ['reviewReport'],
+          width: 120,
+          height: 40
         },
         {
           id: 'network',
@@ -231,7 +279,9 @@ class WorkflowApi {
           type: NodeType.Popover,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['reviewReport']
+          parentNodeIds: ['reviewReport'],
+          width: 120,
+          height: 40
         },
         {
           id: 'country',
@@ -239,7 +289,9 @@ class WorkflowApi {
           type: NodeType.Popover,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['reviewReport']
+          parentNodeIds: ['reviewReport'],
+          width: 120,
+          height: 40
         },
         {
           id: 'end',
@@ -247,7 +299,9 @@ class WorkflowApi {
           type: NodeType.Default,
           status: NodeStatus.Default,
           active: false,
-          parentNodeIds: ['station', 'province', 'network', 'country']
+          parentNodeIds: ['station', 'province', 'network', 'country'],
+          width: 120,
+          height: 40
         }
       ]
     }

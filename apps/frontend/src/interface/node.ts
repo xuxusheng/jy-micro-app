@@ -31,4 +31,6 @@ export interface Node {
 
   parentNodeIds?: string[] // 父节点 ID 列表
   childrenNodeIds?: string[] // 子节点 ID 列表
+  width?: number
+  height?: number
 }

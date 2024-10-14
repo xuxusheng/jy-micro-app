@@ -1,10 +1,7 @@
-import { initialNodes, initialEdges } from './nodes-edges.js'
 import ELK from 'elkjs/lib/elk.bundled.js'
-import React, { useCallback, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import {
   ReactFlow,
-  addEdge,
-  Panel,
   useNodesState,
   useEdgesState,
   useReactFlow
@@ -12,7 +9,6 @@ import {
 
 import '@xyflow/react/dist/style.css'
 import { nodeTypes } from './Nodes'
-import { edgeTypes } from './Edges'
 import { Modal } from 'antd'
 import { NodeStatus } from '../interface/node'
 
@@ -25,8 +21,13 @@ const elk = new ELK()
 // - https://www.eclipse.org/elk/reference/options.html
 const elkOptions = {
   'elk.algorithm': 'layered',
-  'elk.layered.spacing.nodeNodeBetweenLayers': 100,
-  'elk.spacing.nodeNode': 100
+  'elk.spacing.nodeNode': '30',
+  'elk.layered.spacing.nodeNodeBetweenLayers': '60',
+  'elk.layered.spacing': '60',
+  'elk.layered.mergeEdges': 'true',
+  'elk.spacing': '60',
+  'elk.spacing.individual': '60',
+  'elk.edgeRouting': 'SPLINES'
 }
 
 const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
@@ -41,8 +42,8 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
       targetPosition: isHorizontal ? 'left' : 'top',
       sourcePosition: isHorizontal ? 'right' : 'bottom',
       // Hardcode a width and height for elk to use when layouting.
-      width: node.__rf?.width ?? 80,
-      height: node.__rf?.height ?? 24
+      width: node.data.width ?? 80,
+      height: node.data.height ?? 80
     })),
     edges: edges
   }
@@ -55,8 +56,8 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
         // React Flow expects a position property on the node instead of `x`
         // and `y` fields.
         position: {
-          x: node.x - node.width / 2 + Math.random() / 1000,
-          y: node.y - node.height / 2
+          x: node.x,
+          y: node.y
         }
       })),
 
@@ -105,10 +106,6 @@ function LayoutFlow({
     setIsModalOpen(false)
   }
 
-  const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds) as any),
-    []
-  )
   const onLayout = useCallback(
     ({ direction, useInitialNodes = false }: any) => {
       const opts = { 'elk.direction': direction, ...elkOptions }
@@ -119,8 +116,9 @@ function LayoutFlow({
         ({ nodes: layoutedNodes, edges: layoutedEdges }: any) => {
           setNodes(layoutedNodes)
           setEdges(layoutedEdges)
-
-          window.requestAnimationFrame(() => fitView())
+          window.requestAnimationFrame(() => {
+            fitView()
+          })
         }
       )
     },
@@ -128,7 +126,7 @@ function LayoutFlow({
   )
 
   // Calculate the initial layout on mount.
-  useLayoutEffect(() => {
+  useEffect(() => {
     onLayout({ direction: 'DOWN', useInitialNodes: true })
   }, [])
 
@@ -136,10 +134,14 @@ function LayoutFlow({
     <ReactFlow
       nodes={nodes}
       edges={edges}
-      onConnect={onConnect}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
+      minZoom={1}
       fitView
+      fitViewOptions={{
+        minZoom: 1,
+        nodes: nodes?.slice(0, 10)
+      }}
       nodeTypes={nodeTypes}
       onNodeClick={(event, node: any) => {
         if (node.data.hintMode === 'modal') {
@@ -148,17 +150,8 @@ function LayoutFlow({
           console.log('node', node)
         }
       }}
+      panOnScroll
     >
-      <Panel position="top-right">
-        <button onClick={() => onLayout({ direction: 'DOWN' })}>
-          vertical layout
-        </button>
-
-        <button onClick={() => onLayout({ direction: 'RIGHT' })}>
-          horizontal layout
-        </button>
-      </Panel>
-
       <Modal
         title="Basic Modal"
         open={isModalOpen}

@@ -1,5 +1,5 @@
 .container {
-    min-height: 24px;
+    min-height: 40px;
     border: 1px solid #28fffe;
     border-radius: 5px;
     display: flex;
@@ -9,18 +9,15 @@
 }
 
 .container.TEXT {
-    border-color: #fff;
-    background-color: #d75d00;
+    border-color: #d75d00;
 }
 
 .container.POPOVER {
-    border-color: #fff;
-    background-color: #8be6a5;
+    border-color: #8be6a5;
 }
 
 .container.success {
-    border-color: #fff;
-    background-color: #51cb76;
+    border-color: #51cb76;
 }
 
 .icon {
