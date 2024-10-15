@@ -16,19 +16,23 @@ const DefaultNode = ({
 
   return (
     <>
-      <CustomHandle
-        type="target"
-        position={Position.Top}
-        isConnectable={isConnectable}
-      />
+      {!isStart && (
+        <CustomHandle
+          type="target"
+          position={Position.Top}
+          isConnectable={isConnectable}
+        />
+      )}
 
       <CustomNode data={data}></CustomNode>
 
-      <CustomHandle
-        type="source"
-        position={Position.Bottom}
-        isConnectable={isConnectable}
-      />
+      {!isEnd && (
+        <CustomHandle
+          type="source"
+          position={Position.Bottom}
+          isConnectable={isConnectable}
+        />
+      )}
     </>
   )
 }

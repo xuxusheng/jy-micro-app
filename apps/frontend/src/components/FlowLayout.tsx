@@ -1,5 +1,5 @@
 import ELK from 'elkjs/lib/elk.bundled.js'
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import {
   ReactFlow,
   useNodesState,
@@ -9,8 +9,7 @@ import {
 
 import '@xyflow/react/dist/style.css'
 import { nodeTypes } from './Nodes'
-import { Modal } from 'antd'
-import { NodeStatus } from '../interface/node'
+import { Node, NodeType } from '../interface/node'
 
 const elk = new ELK()
 
@@ -77,35 +76,6 @@ function LayoutFlow({
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const { fitView } = useReactFlow()
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [currentNode, setCurrentNode] = useState<any>(null)
-
-  const handleOk = () => {
-    setIsModalOpen(false)
-    setNodes((ns) => {
-      const node: any = ns.find((n: any) => n.data.id === currentNode.data.id)
-      if (node) {
-        node.data.status = NodeStatus.Success
-      }
-      return [...ns]
-    })
-
-    for (let n of currentNode.data.childrenNodeIds) {
-      setEdges((es) => {
-        const _id = `${currentNode.data.id}-${n}`
-        const edge: any = es.find((e: any) => e.id === _id)
-        if (edge) {
-          edge.animated = true
-        }
-        return [...es]
-      })
-    }
-  }
-
-  const handleCancel = () => {
-    setIsModalOpen(false)
-  }
-
   const onLayout = useCallback(
     ({ direction, useInitialNodes = false }: any) => {
       const opts = { 'elk.direction': direction, ...elkOptions }
@@ -125,10 +95,82 @@ function LayoutFlow({
     [nodes, edges]
   )
 
+  const flagNode = (nodes: any, ids: any, flag: boolean) => {
+    ids.forEach((v: any) => {
+      const node: any = nodes.find((v1: any) => v === v1.id)
+      node.data.active = flag
+
+      if (
+        node.data.childrenNodeIds &&
+        node.data.childrenNodeIds?.length > 0 &&
+        node.data.type !== NodeType.Select
+      ) {
+        flagNode(nodes, node.data.childrenNodeIds, flag)
+      }
+    })
+  }
+
+  const onNodeClick = (event: any, node: any) => {
+    if (!node.data.active) {
+      return
+    }
+
+    let flag = !node.data.checked
+    let allDoned = [flag]
+    let isActive = false
+
+    if (node.data.parentNodeIds && node.data.parentNodeIds.length > 0) {
+      node.data.parentNodeIds?.forEach((n1: string) => {
+        const sibingsNodeChecked = nodes
+          .filter(
+            (v1: any) => v1.data.parentNodeIds.includes(n1) && v1.id !== node.id
+          )
+          ?.map((v: any) => v.data.checked)
+        allDoned = allDoned.concat(sibingsNodeChecked)
+      })
+    }
+
+    if (node.data.isSingleSuccess && !!allDoned.find((v1) => v1)) {
+      isActive = true
+    }
+
+    if (!node.data.isSingleSuccess && allDoned.every((v1) => v1)) {
+      isActive = true
+    }
+
+    setNodes((ns) => {
+      const n: any = ns.find((v: any) => v.id === node.id)
+      if (n) {
+        n.data.checked = flag
+
+        flagNode(ns, n.data.childrenNodeIds, isActive)
+      }
+
+      return [...ns]
+    })
+  }
+
   // Calculate the initial layout on mount.
   useEffect(() => {
     onLayout({ direction: 'DOWN', useInitialNodes: true })
   }, [])
+
+  useEffect(() => {
+    setEdges((eds) => {
+      const newEds = eds.map((ed: any) => {
+        const targetNodeId = ed.target
+        const node: any = nodes.find((n: any) => n.id === targetNodeId)
+        if (node.data.active === false) {
+          ed = { ...ed, style: { opacity: 0.2 } }
+        } else {
+          ed = { ...ed, style: { opacity: 1 } }
+        }
+        return ed
+      })
+
+      return [...newEds] as never[]
+    })
+  }, [nodes])
 
   return (
     <ReactFlow
@@ -143,25 +185,9 @@ function LayoutFlow({
         nodes: nodes?.slice(0, 10)
       }}
       nodeTypes={nodeTypes}
-      onNodeClick={(event, node: any) => {
-        if (node.data.hintMode === 'modal') {
-          setIsModalOpen(true)
-          setCurrentNode(node)
-          console.log('node', node)
-        }
-      }}
+      onNodeClick={onNodeClick}
       panOnScroll
-    >
-      <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        destroyOnClose={true}
-      >
-        <p>{currentNode?.data?.hint}</p>
-      </Modal>
-    </ReactFlow>
+    ></ReactFlow>
   )
 }
 

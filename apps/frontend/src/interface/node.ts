@@ -13,7 +13,7 @@ export enum NodeType {
   // 举几个例子
   Default = 'DEFAULT', // 普通节点
   Text = 'TEXT', // 文本节点
-  Popover = 'POPOVER' // 气泡节点
+  Select = 'SELECT' // 任务选择节点
 }
 
 // 流程图中节点
@@ -25,6 +25,7 @@ export interface Node {
 
   text?: string // 节点旁边文本
 
+  checked?: boolean // 节点选择状态
   active: boolean // 节点激活状态
 
   isSingleSuccess?: boolean // 是否选择一个完成

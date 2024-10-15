@@ -52,13 +52,12 @@ export const Demo01Page: FC = () => {
 
   const nodes = useMemo(() => {
     const all: any[] = []
-    console.log(nodeMap)
     nodeMap?.forEach((v) => {
       const data = v
 
       all.push({
         id: v.id,
-        type: v.type,
+        type: 'Default',
         data,
         position: {
           x: 0,

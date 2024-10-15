@@ -1,74 +1,67 @@
 import Styles from './index.module.css'
 import { Node, NodeType } from '../../../interface/node'
-import React, { useState } from 'react'
-import { Checkbox, Popover } from 'antd'
+import React from 'react'
+import { Alert, Checkbox } from 'antd'
+import { WranSvg } from './const'
 
 const CustomNode = ({ data }: { data: Node }) => {
-  const [isDoned, setIsDoned] = useState(false)
-
-  if (data.type === NodeType.Popover) {
+  if (data.type === NodeType.Select) {
     return (
-      <Popover
-        content={
-          <div>
-            <Checkbox
-              checked={isDoned}
-              onChange={(e) => setIsDoned(e.target.checked)}
-            >
-              已完成
-            </Checkbox>
-          </div>
+      <div
+        className={
+          Styles.container +
+          ' ' +
+          Styles[data.type] +
+          ' ' +
+          (!data.active ? Styles.disabled : '')
         }
-        title={data.text}
-        trigger={'click'}
+        style={{
+          width: data.width + 'px',
+          height: data.height + 'px'
+        }}
       >
-        <div
-          className={Styles.container + ' ' + Styles[data.type]}
-          style={{
-            width: data.width + 'px',
-            height: data.height + 'px'
-          }}
-        >
-          <div className={Styles.icon + ' ' + Styles[data.status]}></div>
-          <div className={Styles.label}>{data.title}</div>
-        </div>
-      </Popover>
+        <Checkbox
+          checked={data.checked}
+          style={{ width: '24px', height: '24px' }}
+        ></Checkbox>
+        <div className={Styles.label}>{data.title}</div>
+      </div>
     )
   }
 
   if (data.type === NodeType.Text) {
     return (
-      <Popover
-        content={<p style={{ maxWidth: '300px' }}>{data.text}</p>}
-        trigger={'click'}
-        open={true}
-        placement={'right'}
-        style={{ maxWidth: '200px' }}
-        arrow={false}
+      <div
+        className={
+          Styles.container +
+          ' ' +
+          Styles[data.type] +
+          ' ' +
+          (!data.active ? Styles.disabled : '')
+        }
+        style={{
+          width: data.width + 'px',
+          height: data.height + 'px'
+        }}
       >
-        <div
-          className={Styles.container + ' ' + Styles[data.type]}
-          style={{
-            width: data.width + 'px',
-            height: data.height + 'px'
-          }}
-        >
-          <div className={Styles.icon + ' ' + Styles[data.status]}></div>
-          <div className={Styles.label}>{data.title}</div>
+        <div className={Styles.icon}>{WranSvg}</div>
+        <div className={Styles.label}>{data.title}</div>
+
+        <div className={Styles.popoverText}>
+          <Alert message={data.text} type="warning" />
         </div>
-      </Popover>
+      </div>
     )
   }
 
   return (
     <div
-      className={Styles.container + ' ' + Styles[data.type]}
+      className={Styles.container + ' ' + (!data.active ? Styles.disabled : '')}
       style={{
         width: data.width + 'px',
         height: data.height + 'px'
       }}
     >
-      <div className={Styles.icon + ' ' + Styles[data.status]}></div>
       <div className={Styles.label}>{data.title}</div>
     </div>
   )
