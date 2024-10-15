@@ -1,5 +1,4 @@
 import React from 'react'
-import Flow from '../../components/Flow'
 
 const Home = () => {
   return (
@@ -8,9 +7,7 @@ const Home = () => {
         width: '100vw',
         height: window.__POWERED_BY_QIANKUN__ ? 'calc(100vh - 56px)' : '100vh'
       }}
-    >
-      <Flow />
-    </div>
+    ></div>
   )
 }
 

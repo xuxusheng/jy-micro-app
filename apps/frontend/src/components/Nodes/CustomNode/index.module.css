@@ -1,0 +1,79 @@
+.container {
+  min-height: 40px;
+  border: 1px solid #28fffe;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+}
+
+.container :global .ant-checkbox .ant-checkbox-inner {
+  box-sizing: border-box;
+  display: block;
+  width: 24px;
+  height: 24px;
+  direction: ltr;
+  background-color: transparent;
+  border: 2px solid #06a335;
+  border-radius: 4px;
+  border-collapse: separate;
+  transition: all 0.3s;
+}
+
+.container :global .ant-checkbox .ant-checkbox-inner:after {
+  width: 10px;
+  height: 14px;
+}
+
+.container :global .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #06a335;
+}
+
+.container :global .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner {
+  border-color: #06a335;
+}
+.container :global .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner {
+  background-color: #06a335;
+}
+
+
+.container.TEXT {
+  border-color: #d75d00;
+}
+
+.container.SELECT {
+  border-color: #8be6a5;
+}
+
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.container.disabled {
+  opacity: 0.2;
+}
+
+.label {
+  font-size: 14px;
+  color: #fff;
+}
+
+.popoverText {
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(calc(100% + 20px), -50%);
+  width: 340px;
+}
+.popoverText > div {
+  border-color: #d75d00;
+  font-size: 12px;
+  padding: 8px;
+  background-color: #d75d00;
+  color: #fff;
+}
