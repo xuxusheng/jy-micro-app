@@ -1,12 +1,12 @@
-import js from '@eslint/js'
-import perfectionist from 'eslint-plugin-perfectionist'
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
+const js = require('@eslint/js')
+const perfectionist = require('eslint-plugin-perfectionist')
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended')
+const reactHooks = require('eslint-plugin-react-hooks')
+const reactRefresh = require('eslint-plugin-react-refresh')
+const globals = require('globals')
+const tseslint = require('typescript-eslint')
 
-export default tseslint.config(
+module.exports = tseslint.config(
   perfectionist.configs['recommended-natural'],
   { ignores: ['dist'] },
   {
