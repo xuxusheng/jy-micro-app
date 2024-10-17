@@ -1,5 +1,6 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { lazy } from 'react'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+
 import { Demo01Page } from '../pages/Demo01'
 
 const Home = lazy(() => import('../pages/Home'))
@@ -12,17 +13,17 @@ const router = createBrowserRouter(
     //   element: <Home />
     // },
     {
-      path: '/about',
-      element: <About />
+      element: <About />,
+      path: '/about'
     },
     {
-      path: 'demo01',
-      element: <Demo01Page />
+      element: <Demo01Page />,
+      path: 'demo01'
     },
     {
+      element: <Navigate to="/demo01" />,
       // 重定向
-      path: '*',
-      element: <Navigate to="/demo01" />
+      path: '*'
     }
   ],
   { basename: window.__POWERED_BY_QIANKUN__ ? '/micro-app/3' : '/' }

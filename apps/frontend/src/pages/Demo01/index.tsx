@@ -1,12 +1,13 @@
-import React, { FC, useMemo, useState } from 'react'
-import { workflowApi } from '../../api/workflow'
-import { Node } from '../../interface/node'
-import FlowLayout from '../../components/FlowLayout'
 import { MarkerType, ReactFlowProvider } from '@xyflow/react'
+import React, { FC, useMemo, useState } from 'react'
 
-type NodeWithChildren = Node & {
+import { workflowApi } from '../../api/workflow'
+import FlowLayout from '../../components/FlowLayout'
+import { Node } from '../../interface/node'
+
+type NodeWithChildren = {
   childrenNodeIds?: string[]
-}
+} & Node
 
 // const workflow = workflowApi.demo01()
 
@@ -56,13 +57,13 @@ export const Demo01Page: FC = () => {
       const data = v
 
       all.push({
-        id: v.id,
-        type: 'Default',
         data,
+        id: v.id,
         position: {
           x: 0,
           y: 0
-        }
+        },
+        type: 'Default'
       })
     })
     return all
@@ -74,10 +75,10 @@ export const Demo01Page: FC = () => {
       v.childrenNodeIds?.forEach((v1) => {
         all.push({
           id: `${v.id}-${v1}`,
+          markerEnd: { color: '#49e6ef', type: MarkerType.ArrowClosed },
           source: v.id,
           target: v1,
-          type: 'smoothstep',
-          markerEnd: { type: MarkerType.ArrowClosed, color: '#49e6ef' }
+          type: 'smoothstep'
         })
       })
     })
@@ -89,10 +90,10 @@ export const Demo01Page: FC = () => {
 
   return (
     <div
-      style={{ width: '100vw', height: '100vh', backgroundColor: '#172533' }}
+      style={{ backgroundColor: '#172533', height: '100vh', width: '100vw' }}
     >
       <ReactFlowProvider>
-        <FlowLayout initialNodes={nodes} initialEdges={edges}></FlowLayout>
+        <FlowLayout initialEdges={edges} initialNodes={nodes}></FlowLayout>
       </ReactFlowProvider>
     </div>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const WranSvg = (
-  <svg viewBox="0 0 1024 1024" version="1.1" p-id="1472" width="24" height="24">
+  <svg height="24" p-id="1472" version="1.1" viewBox="0 0 1024 1024" width="24">
     <path
       d="M1019.20384 901.632L546.62784 82.944c-15.36-26.112-52.736-26.112-68.096 0L5.44384 901.632c-15.36 26.112 3.584 58.88 34.304 58.88h945.152c30.208 0 49.152-32.768 34.304-58.88z"
       fill="#d75d00"

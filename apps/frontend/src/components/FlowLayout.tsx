@@ -1,15 +1,15 @@
-import ELK from 'elkjs/lib/elk.bundled.js'
-import React, { useCallback, useEffect } from 'react'
 import {
   ReactFlow,
-  useNodesState,
   useEdgesState,
+  useNodesState,
   useReactFlow
 } from '@xyflow/react'
-
+import ELK from 'elkjs/lib/elk.bundled.js'
+import React, { useCallback, useEffect } from 'react'
 import '@xyflow/react/dist/style.css'
-import { nodeTypes } from './Nodes'
+
 import { Node, NodeType } from '../interface/node'
+import { nodeTypes } from './Nodes'
 
 const elk = new ELK()
 
@@ -20,36 +20,38 @@ const elk = new ELK()
 // - https://www.eclipse.org/elk/reference/options.html
 const elkOptions = {
   'elk.algorithm': 'layered',
-  'elk.spacing.nodeNode': '30',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '60',
-  'elk.layered.spacing': '60',
+  'elk.edgeRouting': 'SPLINES',
   'elk.layered.mergeEdges': 'true',
+  'elk.layered.spacing': '60',
+  'elk.layered.spacing.nodeNodeBetweenLayers': '60',
   'elk.spacing': '60',
   'elk.spacing.individual': '60',
-  'elk.edgeRouting': 'SPLINES'
+  'elk.spacing.nodeNode': '30'
 }
 
 const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
   const isHorizontal = options?.['elk.direction'] === 'RIGHT'
   const graph = {
-    id: 'root',
-    layoutOptions: options,
     children: nodes.map((node: any) => ({
       ...node,
+      height: node.data.height ?? 80,
+      sourcePosition: isHorizontal ? 'right' : 'bottom',
       // Adjust the target and source handle positions based on the layout
       // direction.
       targetPosition: isHorizontal ? 'left' : 'top',
-      sourcePosition: isHorizontal ? 'right' : 'bottom',
       // Hardcode a width and height for elk to use when layouting.
-      width: node.data.width ?? 80,
-      height: node.data.height ?? 80
+      width: node.data.width ?? 80
     })),
-    edges: edges
+    edges: edges,
+    id: 'root',
+    layoutOptions: options
   }
 
   return elk
     .layout(graph)
     .then((layoutedGraph: any) => ({
+      edges: layoutedGraph.edges,
+
       nodes: layoutedGraph.children.map((node: any) => ({
         ...node,
         // React Flow expects a position property on the node instead of `x`
@@ -58,19 +60,17 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
           x: node.x,
           y: node.y
         }
-      })),
-
-      edges: layoutedGraph.edges
+      }))
     }))
     .catch(console.error)
 }
 
 function LayoutFlow({
-  initialNodes,
-  initialEdges
+  initialEdges,
+  initialNodes
 }: {
-  initialNodes: any
   initialEdges: any
+  initialNodes: any
 }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
@@ -83,7 +83,7 @@ function LayoutFlow({
       const es = useInitialNodes ? initialEdges : edges
 
       getLayoutedElements(ns, es, opts).then(
-        ({ nodes: layoutedNodes, edges: layoutedEdges }: any) => {
+        ({ edges: layoutedEdges, nodes: layoutedNodes }: any) => {
           setNodes(layoutedNodes)
           setEdges(layoutedEdges)
           window.requestAnimationFrame(() => {
@@ -115,7 +115,7 @@ function LayoutFlow({
       return
     }
 
-    let flag = !node.data.checked
+    const flag = !node.data.checked
     let allDoned = [flag]
     let isActive = false
 
@@ -174,18 +174,18 @@ function LayoutFlow({
 
   return (
     <ReactFlow
-      nodes={nodes}
       edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      minZoom={1}
       fitView
       fitViewOptions={{
         minZoom: 1,
         nodes: nodes?.slice(0, 10)
       }}
+      minZoom={1}
+      nodes={nodes}
       nodeTypes={nodeTypes}
+      onEdgesChange={onEdgesChange}
       onNodeClick={onNodeClick}
+      onNodesChange={onNodesChange}
       panOnScroll
     ></ReactFlow>
   )

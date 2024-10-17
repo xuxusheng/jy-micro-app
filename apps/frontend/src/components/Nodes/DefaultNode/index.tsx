@@ -1,15 +1,15 @@
 import { Position } from '@xyflow/react'
 
-import CustomNode from '../CustomNode'
-import CustomHandle from '../../Handle'
 import { Node } from '../../../interface/node'
+import CustomHandle from '../../Handle'
+import CustomNode from '../CustomNode'
 
 const DefaultNode = ({
-  isConnectable,
-  data
+  data,
+  isConnectable
 }: {
-  isConnectable: boolean
   data: Node
+  isConnectable: boolean
 }) => {
   const isStart = !data?.parentNodeIds?.length
   const isEnd = !data?.childrenNodeIds?.length
@@ -18,9 +18,9 @@ const DefaultNode = ({
     <>
       {!isStart && (
         <CustomHandle
-          type="target"
-          position={Position.Top}
           isConnectable={isConnectable}
+          position={Position.Top}
+          type="target"
         />
       )}
 
@@ -28,9 +28,9 @@ const DefaultNode = ({
 
       {!isEnd && (
         <CustomHandle
-          type="source"
-          position={Position.Bottom}
           isConnectable={isConnectable}
+          position={Position.Bottom}
+          type="source"
         />
       )}
     </>
