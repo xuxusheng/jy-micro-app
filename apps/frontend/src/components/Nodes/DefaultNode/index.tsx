@@ -1,6 +1,6 @@
 import { Position } from '@xyflow/react'
 
-import { Node } from '../../../interface/node'
+import { FlowNode } from '../../../interface/flowNode'
 import CustomHandle from '../../Handle'
 import CustomNode from '../CustomNode'
 
@@ -8,7 +8,7 @@ const DefaultNode = ({
   data,
   isConnectable
 }: {
-  data: Node
+  data: FlowNode
   isConnectable: boolean
 }) => {
   const isStart = !data?.parentNodeIds?.length

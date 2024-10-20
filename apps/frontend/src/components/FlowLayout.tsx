@@ -1,14 +1,21 @@
 import {
+  Controls,
+  type Edge,
   ReactFlow,
   useEdgesState,
   useNodesState,
   useReactFlow
 } from '@xyflow/react'
 import ELK from 'elkjs/lib/elk.bundled.js'
-import React, { useCallback, useEffect } from 'react'
+import { ElkNode, LayoutOptions } from 'elkjs/lib/elk-api'
 import '@xyflow/react/dist/style.css'
+import React, {
+  type MouseEvent as ReactMouseEvent,
+  useCallback,
+  useEffect
+} from 'react'
 
-import { Node, NodeType } from '../interface/node'
+import { DefaultNode } from '../interface/flowNode'
 import { nodeTypes } from './Nodes'
 
 const elk = new ELK()
@@ -21,6 +28,7 @@ const elk = new ELK()
 const elkOptions = {
   'elk.algorithm': 'layered',
   'elk.edgeRouting': 'SPLINES',
+  'elk.layered.crossingMinimization.forceNodeModelOrder': true,
   'elk.layered.mergeEdges': 'true',
   'elk.layered.spacing': '60',
   'elk.layered.spacing.nodeNodeBetweenLayers': '60',
@@ -29,10 +37,14 @@ const elkOptions = {
   'elk.spacing.nodeNode': '30'
 }
 
-const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
+const getLayoutedElements = (
+  nodes: DefaultNode[],
+  edges: any,
+  options: LayoutOptions = {}
+) => {
   const isHorizontal = options?.['elk.direction'] === 'RIGHT'
-  const graph = {
-    children: nodes.map((node: any) => ({
+  const graph: ElkNode = {
+    children: nodes.map((node) => ({
       ...node,
       height: node.data.height ?? 80,
       sourcePosition: isHorizontal ? 'right' : 'bottom',
@@ -49,10 +61,10 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
 
   return elk
     .layout(graph)
-    .then((layoutedGraph: any) => ({
+    .then((layoutedGraph) => ({
       edges: layoutedGraph.edges,
 
-      nodes: layoutedGraph.children.map((node: any) => ({
+      nodes: layoutedGraph.children?.map((node) => ({
         ...node,
         // React Flow expects a position property on the node instead of `x`
         // and `y` fields.
@@ -60,7 +72,7 @@ const getLayoutedElements = (nodes: any, edges: any, options: any = {}) => {
           x: node.x,
           y: node.y
         }
-      }))
+      })) as DefaultNode[]
     }))
     .catch(console.error)
 }
@@ -69,21 +81,28 @@ function LayoutFlow({
   initialEdges,
   initialNodes
 }: {
-  initialEdges: any
-  initialNodes: any
+  initialEdges: Edge[]
+  initialNodes: DefaultNode[]
 }) {
-  const [nodes, setNodes, onNodesChange] = useNodesState([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const [nodes, setNodes] = useNodesState<DefaultNode>([])
+  const [edges, setEdges] = useEdgesState<Edge>([])
   const { fitView } = useReactFlow()
 
   const onLayout = useCallback(
-    ({ direction, useInitialNodes = false }: any) => {
-      const opts = { 'elk.direction': direction, ...elkOptions }
+    ({
+      direction,
+      useInitialNodes = false
+    }: {
+      direction: string
+      useInitialNodes: boolean
+    }) => {
+      const opts = { 'elk.direction': direction, ...elkOptions } as any
       const ns = useInitialNodes ? initialNodes : nodes
       const es = useInitialNodes ? initialEdges : edges
 
       getLayoutedElements(ns, es, opts).then(
         ({ edges: layoutedEdges, nodes: layoutedNodes }: any) => {
+          console.log(layoutedNodes)
           setNodes(layoutedNodes)
           setEdges(layoutedEdges)
           window.requestAnimationFrame(() => {
@@ -95,23 +114,36 @@ function LayoutFlow({
     [nodes, edges]
   )
 
-  const flagNode = (nodes: any, ids: any, flag: boolean) => {
-    ids.forEach((v: any) => {
-      const node: any = nodes.find((v1: any) => v === v1.id)
-      node.data.active = flag
+  const flagNode = (
+    nodes: DefaultNode[],
+    ids: string[],
+    flag: boolean,
+    checked?: boolean
+  ) => {
+    ids.forEach((v) => {
+      const node = nodes.find((v1) => v === v1.id)
+      if (node) {
+        node.data.active = flag
 
-      if (
-        node.data.childrenNodeIds &&
-        node.data.childrenNodeIds?.length > 0 &&
-        node.data.type !== NodeType.Select
-      ) {
-        flagNode(nodes, node.data.childrenNodeIds, flag)
+        node.data.checked = checked
+
+        if (
+          !flag &&
+          node?.data.childrenNodeIds &&
+          node?.data.childrenNodeIds?.length > 0
+        ) {
+          flagNode(nodes, node.data.childrenNodeIds, flag, false)
+        }
       }
     })
   }
 
-  const onNodeClick = (event: any, node: any) => {
-    if (!node.data.active) {
+  const onNodeClick = (event: ReactMouseEvent, node: DefaultNode) => {
+    event.stopPropagation()
+    event.preventDefault()
+    const isStart = !node.data?.parentNodeIds?.length
+    const isEnd = !node.data?.childrenNodeIds?.length
+    if (!node.data.active || isStart || isEnd) {
       return
     }
 
@@ -119,19 +151,25 @@ function LayoutFlow({
     let allDoned = [flag]
     let isActive = false
 
+    let sibingsNode: DefaultNode[] = []
+
     if (node.data.parentNodeIds && node.data.parentNodeIds.length > 0) {
       node.data.parentNodeIds?.forEach((n1: string) => {
-        const sibingsNodeChecked = nodes
-          .filter(
-            (v1: any) => v1.data.parentNodeIds.includes(n1) && v1.id !== node.id
-          )
-          ?.map((v: any) => v.data.checked)
+        sibingsNode =
+          nodes.filter(
+            (v1) => v1?.data?.parentNodeIds?.includes(n1) && v1.id !== node.id
+          ) || []
+        const sibingsNodeChecked = sibingsNode?.map((v) => !!v.data.checked)
         allDoned = allDoned.concat(sibingsNodeChecked)
       })
     }
 
     if (node.data.isSingleSuccess && !!allDoned.find((v1) => v1)) {
       isActive = true
+      // 同级节点变灰色
+      sibingsNode?.forEach((v) => {
+        v.data.active = false
+      })
     }
 
     if (!node.data.isSingleSuccess && allDoned.every((v1) => v1)) {
@@ -139,28 +177,39 @@ function LayoutFlow({
     }
 
     setNodes((ns) => {
-      const n: any = ns.find((v: any) => v.id === node.id)
+      // 子级节点变亮
+      const n = ns.find((v) => v.id === node.id)
       if (n) {
         n.data.checked = flag
 
-        flagNode(ns, n.data.childrenNodeIds, isActive)
+        flagNode(ns, n.data.childrenNodeIds || [], isActive)
       }
 
       return [...ns]
     })
+
+    return false
+  }
+
+  const onResize = () => {
+    fitView()
   }
 
   // Calculate the initial layout on mount.
   useEffect(() => {
     onLayout({ direction: 'DOWN', useInitialNodes: true })
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('resize', onResize)
+    }
   }, [])
 
   useEffect(() => {
     setEdges((eds) => {
-      const newEds = eds.map((ed: any) => {
+      const newEds = eds.map((ed: Edge) => {
         const targetNodeId = ed.target
-        const node: any = nodes.find((n: any) => n.id === targetNodeId)
-        if (node.data.active === false) {
+        const n = nodes.find((n: DefaultNode) => n.id === targetNodeId)
+        if (n?.data?.active === false) {
           ed = { ...ed, style: { opacity: 0.2 } }
         } else {
           ed = { ...ed, style: { opacity: 1 } }
@@ -182,12 +231,19 @@ function LayoutFlow({
       }}
       minZoom={1}
       nodes={nodes}
+      nodesDraggable={false}
       nodeTypes={nodeTypes}
-      onEdgesChange={onEdgesChange}
       onNodeClick={onNodeClick}
-      onNodesChange={onNodesChange}
       panOnScroll
-    ></ReactFlow>
+    >
+      <Controls
+        fitViewOptions={{
+          minZoom: 1,
+          nodes: nodes?.slice(0, 10)
+        }}
+        showInteractive={false}
+      />
+    </ReactFlow>
   )
 }
 
