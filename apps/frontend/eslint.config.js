@@ -26,6 +26,7 @@ module.exports = tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 0,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true }

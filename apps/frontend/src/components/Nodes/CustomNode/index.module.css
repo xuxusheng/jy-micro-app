@@ -7,6 +7,7 @@
   gap: 8px;
   align-items: center;
   position: relative;
+  font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
 }
 
 .container :global .ant-checkbox .ant-checkbox-inner {
@@ -68,12 +69,18 @@
   right: 0;
   top: 50%;
   transform: translate(calc(100% + 20px), -50%);
-  width: 340px;
+  width: 440px;
 }
 .popoverText > div {
-  border-color: #d75d00;
+  border-color: #e19968;
   font-size: 12px;
   padding: 8px;
-  background-color: #d75d00;
+  background-color: #e19968;
   color: #fff;
+  text-align: left;
+}
+
+.popoverText  span {
+  background-color: #e12525;
+  color: #000;
 }

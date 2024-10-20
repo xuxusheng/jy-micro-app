@@ -1,13 +1,13 @@
-import { MarkerType, ReactFlowProvider } from '@xyflow/react'
+import { type Edge, MarkerType, ReactFlowProvider } from '@xyflow/react'
 import React, { FC, useMemo, useState } from 'react'
 
 import { workflowApi } from '../../api/workflow'
 import FlowLayout from '../../components/FlowLayout'
-import { Node } from '../../interface/node'
+import { DefaultNode, FlowNode } from '../../interface/flowNode'
 
 type NodeWithChildren = {
   childrenNodeIds?: string[]
-} & Node
+} & FlowNode
 
 // const workflow = workflowApi.demo01()
 
@@ -18,7 +18,7 @@ export const Demo01Page: FC = () => {
   const [rootNode, setRootNode] = useState<NodeWithChildren>()
 
   // 包含所有节点的 map，每个节点属性中都包含其父节点和子节点的 id
-  const nodeMap = useMemo(() => {
+  const nodeMap: Map<string, FlowNode> = useMemo(() => {
     const nodes = workflow.nodes
     const map = new Map<string, NodeWithChildren>()
 
@@ -52,7 +52,7 @@ export const Demo01Page: FC = () => {
   }, [workflow])
 
   const nodes = useMemo(() => {
-    const all: any[] = []
+    const all: DefaultNode[] = []
     nodeMap?.forEach((v) => {
       const data = v
 
@@ -70,7 +70,7 @@ export const Demo01Page: FC = () => {
   }, [nodeMap])
 
   const edges = useMemo(() => {
-    const all: any[] = []
+    const all: Edge[] = []
     nodeMap.forEach((v) => {
       v.childrenNodeIds?.forEach((v1) => {
         all.push({

@@ -1,4 +1,6 @@
-import { NodeStatus, NodeType, Workflow } from '../interface/node'
+import { ReactElement } from 'react'
+
+import { NodeStatus, NodeType, Workflow } from '../interface/flowNode'
 
 class WorkflowApi {
   demo01 = (): Workflow => {
@@ -7,16 +9,18 @@ class WorkflowApi {
       nodes: [
         {
           active: true,
+          checked: false,
           height: 40,
           id: 'ccp',
           parentNodeIds: [],
           status: NodeStatus.Default,
-          title: 'CCP发冷却水进阀温度高告警',
+          title: 'CCP 阀冷却水进阀温度高告警',
           type: NodeType.Default,
           width: 300
         },
         {
           active: true,
+          checked: false,
           height: 40,
           id: 'note',
           parentNodeIds: ['ccp'],
@@ -27,51 +31,68 @@ class WorkflowApi {
           width: 120
         },
         {
-          active: true,
+          active: false,
+          checked: false,
           height: 40,
           id: 'report',
           parentNodeIds: ['note'],
           status: NodeStatus.Default,
+          text: (
+            <div>
+              汇报模版:
+              <br />
+              你好，韶山站汇报，×月×日×时×分，韶山站阀水冷系统发进阀温度高报警，当前输送功率××MW，现场天气××。现场正在进行详细检查，有关情况随后再汇报，收到请回复。
+            </div>
+          ),
           title: '汇报',
-          type: NodeType.Default,
+          type: NodeType.Text,
           width: 80
         },
         {
-          active: true,
+          active: false,
           checked: false,
           height: 40,
           id: 'reportStation',
           parentNodeIds: ['report'],
           status: NodeStatus.Default,
-          text: '可标记状态为成功',
           title: '汇报站部',
           type: NodeType.Select,
           width: 120
         },
         {
-          active: true,
+          active: false,
           checked: false,
           height: 40,
           id: 'reportScheduling',
           parentNodeIds: ['report'],
           status: NodeStatus.Default,
-          text: '可标记状态为已完成，同级两个节点都需要标记为已完成后才能继续',
           title: '汇报调度',
           type: NodeType.Select,
           width: 120
         },
         {
           active: false,
+          checked: false,
           height: 40,
           id: 'monitorClosely',
           parentNodeIds: ['reportStation', 'reportScheduling'],
           status: NodeStatus.Default,
+          text: (
+            <div>
+              需密切监视
+              <span>
+                阀进水温度、阀出水温度、冷却水流量、阀厅红外测温测量数据
+              </span>
+              等重要信息
+            </div>
+          ) as ReactElement,
           title: '密切监视',
           type: NodeType.Default,
           width: 120
         },
         {
           active: false,
+          checked: false,
           height: 40,
           id: 'dataComparison',
           parentNodeIds: ['monitorClosely'],
@@ -87,7 +108,6 @@ class WorkflowApi {
           id: 'longitudinalComparison',
           parentNodeIds: ['dataComparison'],
           status: NodeStatus.Default,
-          text: '可标记状态为已完成，同级两个节点都需要标记为已完成后才能继续',
           title: '纵向对比分析',
           type: NodeType.Select,
           width: 200
@@ -99,13 +119,13 @@ class WorkflowApi {
           id: 'horizontalComparison',
           parentNodeIds: ['dataComparison'],
           status: NodeStatus.Default,
-          text: '可标记状态为已完成，同级两个节点都需要标记为已完成后才能继续',
           title: '同级阀冷系统横向对比',
           type: NodeType.Select,
           width: 200
         },
         {
           active: false,
+          checked: false,
           height: 40,
           id: 'checkEquipment',
           parentNodeIds: ['longitudinalComparison', 'horizontalComparison'],
@@ -121,7 +141,7 @@ class WorkflowApi {
           id: 'checkCoolingEquipment',
           parentNodeIds: ['checkEquipment'],
           status: NodeStatus.Default,
-          title: '冷却设备间检查',
+          title: '内冷设备间检查',
           type: NodeType.Select,
           width: 140
         },
@@ -149,6 +169,7 @@ class WorkflowApi {
         },
         {
           active: false,
+          checked: false,
           height: 40,
           id: 'summary',
           parentNodeIds: [
@@ -163,6 +184,7 @@ class WorkflowApi {
         },
         {
           active: false,
+          checked: false,
           height: 40,
           id: 'analysis',
           parentNodeIds: ['summary'],
@@ -251,6 +273,7 @@ class WorkflowApi {
         },
         {
           active: false,
+          checked: false,
           height: 40,
           id: 'reviewReport',
           parentNodeIds: [
@@ -262,8 +285,15 @@ class WorkflowApi {
             'analysis6'
           ],
           status: NodeStatus.Default,
+          text: (
+            <div>
+              汇报模版如下：
+              <br />
+              你好，韶山站汇报，×月×日×时×分，韶山站阀水冷系统发进阀温度高报警，当前输送功率××MW，现场天气××。现场检查为****（初步检查结果），处置措施为*****（现场采取的措施）有关情况随后再汇报，收到请回复。（15min）
+            </div>
+          ),
           title: '复核后汇报',
-          type: NodeType.Default,
+          type: NodeType.Text,
           width: 160
         },
         {
@@ -312,6 +342,7 @@ class WorkflowApi {
         },
         {
           active: false,
+          checked: false,
           height: 40,
           id: 'end',
           parentNodeIds: ['station', 'province', 'network', 'country'],
