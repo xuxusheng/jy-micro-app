@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
 import { Demo01Page } from '../pages/Demo01'
 
@@ -8,10 +8,10 @@ const About = lazy(() => import('../pages/About'))
 
 const router = createBrowserRouter(
   [
-    // {
-    //   path: '/',
-    //   element: <Home />
-    // },
+    {
+      element: <Home />,
+      path: '/'
+    },
     {
       element: <About />,
       path: '/about'
@@ -19,12 +19,12 @@ const router = createBrowserRouter(
     {
       element: <Demo01Page />,
       path: 'demo01'
-    },
-    {
-      element: <Navigate to="/demo01" />,
-      // 重定向
-      path: '*'
     }
+    // {
+    //   element: <Navigate to="/demo01" />,
+    //   重定向
+    // path: '*'
+    // }
   ],
   { basename: window.__POWERED_BY_QIANKUN__ ? '/micro-app/3' : '/' }
 )

@@ -7,7 +7,9 @@ const Home = () => {
         height: window.__POWERED_BY_QIANKUN__ ? 'calc(100vh - 56px)' : '100vh',
         width: '100vw'
       }}
-    ></div>
+    >
+      Home
+    </div>
   )
 }
 
