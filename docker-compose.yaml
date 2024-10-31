@@ -1,0 +1,7 @@
+services:
+  jy-micro-app:
+    image: registry.cn-hangzhou.aliyuncs.com/xusheng/jy-micro-app:f550353530b08cb669f406790222e5d4c7d6eec9
+    container_name: jy-micro-app
+    restart: always
+    ports:
+      - 3000:3000
