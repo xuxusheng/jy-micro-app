@@ -18,15 +18,15 @@ const router = createBrowserRouter(
     },
     {
       element: <Demo01Page />,
-      path: 'demo01'
+      path: 'workflow'
     }
     // {
     //   element: <Navigate to="/demo01" />,
     //   重定向
     // path: '*'
     // }
-  ],
-  { basename: window.__POWERED_BY_QIANKUN__ ? '/micro-app/3' : '/' }
+  ]
+  // { basename: window.__POWERED_BY_QIANKUN__ ? '/micro-app/3' : '/' }
 )
 
 export default router
