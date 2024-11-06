@@ -15,8 +15,8 @@ import React, {
   useEffect
 } from 'react'
 
-import { DefaultNode } from '../interface/flowNode'
-import { nodeTypes } from './Nodes'
+import { DefaultNode } from '../../interface/flowNode'
+import { nodeTypes } from '../Nodes'
 
 const elk = new ELK()
 
@@ -227,7 +227,7 @@ function LayoutFlow({
       fitView
       fitViewOptions={{
         minZoom: 1,
-        nodes: nodes?.slice(0, 10)
+        nodes: nodes?.slice(0, 8)
       }}
       minZoom={1}
       nodes={nodes}
@@ -239,7 +239,7 @@ function LayoutFlow({
       <Controls
         fitViewOptions={{
           minZoom: 1,
-          nodes: nodes?.slice(0, 10)
+          nodes: nodes?.slice(0, 8)
         }}
         showInteractive={false}
       />
