@@ -25,7 +25,10 @@ const router = createBrowserRouter(
     //   重定向
     // path: '*'
     // }
-  ]
+  ],
+  {
+    basename: '/shaoshan/whjyczlcqd'
+  }
   // { basename: window.__POWERED_BY_QIANKUN__ ? '/micro-app/3' : '/' }
 )
 
