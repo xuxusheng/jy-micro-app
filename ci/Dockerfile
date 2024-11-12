@@ -39,6 +39,7 @@ WORKDIR /app
 COPY --from=builder /project/app/ ./backend
 #COPY --from=builder /project/apps/backend/prisma ./backend
 COPY --from=builder /project/apps/frontend/build/ ./frontend/shaoshan/whjyczlcqd
+COPY --from=builder /project/apps/frontend/build/index.html ./frontend
 COPY ./ci/entrypoint.sh /
 RUN #cp ./backend/client/* ./backend
 
