@@ -1,10 +1,8 @@
-import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 
+import { About } from '../pages/About'
 import { Demo01Page } from '../pages/Demo01'
-
-const Home = lazy(() => import('../pages/Home'))
-const About = lazy(() => import('../pages/About'))
+import Home from '../pages/Home'
 
 const router = createBrowserRouter(
   [

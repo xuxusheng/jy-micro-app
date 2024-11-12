@@ -1,5 +1,3 @@
-const About = () => {
+export const About = () => {
   return <>About</>
 }
-
-export default About
