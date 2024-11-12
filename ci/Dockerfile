@@ -38,7 +38,7 @@ WORKDIR /app
 # 准备容器启动脚本
 COPY --from=builder /project/app/ ./backend
 #COPY --from=builder /project/apps/backend/prisma ./backend
-COPY --from=builder /project/apps/frontend/build/ ./frontend
+COPY --from=builder /project/apps/frontend/build/ ./frontend/shaoshan/whjyczlcqd
 COPY ./ci/entrypoint.sh /
 RUN #cp ./backend/client/* ./backend
 
