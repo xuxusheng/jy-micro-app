@@ -25,7 +25,7 @@ const router = createHashRouter(
     // }
   ],
   {
-    basename: '/shaoshan/whjyczlcqd'
+    // basename: '/shaoshan/whjyczlcqd'
   }
   // { basename: window.__POWERED_BY_QIANKUN__ ? '/micro-app/3' : '/' }
 )
