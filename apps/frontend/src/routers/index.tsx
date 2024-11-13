@@ -1,26 +1,23 @@
 import { createHashRouter } from 'react-router-dom'
 
-import { NotFoundPage } from '../pages/404Page'
-import { About } from '../pages/About'
-import { Demo01Page } from '../pages/Demo01'
-import Home from '../pages/Home'
+import { WorkflowPage } from '../pages/Workflow'
 
 const router = createHashRouter(
   [
+    // {
+    //   element: <Home />,
+    //   path: '/'
+    // },
+    // {
+    //   element: <About />,
+    //   path: '/about'
+    // },
+    // {
+    //   element: <WorkflowPage />,
+    //   path: 'workflow'
+    // },
     {
-      element: <Home />,
-      path: '/'
-    },
-    {
-      element: <About />,
-      path: '/about'
-    },
-    {
-      element: <Demo01Page />,
-      path: 'workflow'
-    },
-    {
-      element: <NotFoundPage />,
+      element: <WorkflowPage />,
       path: '*'
     }
     // {

@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
+import './public-path'
 import './index.css'
 import App from './App'
-import './public-path'
 
 interface Props {
   container?: HTMLElement

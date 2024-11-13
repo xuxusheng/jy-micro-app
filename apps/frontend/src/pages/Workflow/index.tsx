@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { useState } from 'react'
 
 import Header from '../../components/Header'
 import Tab from '../../components/Tab'
@@ -11,7 +11,7 @@ import WorkFlow5 from '../../components/WorkFlow5'
 import { TabItem } from '../../interface/tabItem'
 import styles from './index.module.css'
 
-export const Demo01Page = () => {
+export const WorkflowPage = () => {
   const [currentTab, setCurrentTab] = useState<string>(NAVDATA[0].key)
 
   const changeTab = (v: TabItem) => {
