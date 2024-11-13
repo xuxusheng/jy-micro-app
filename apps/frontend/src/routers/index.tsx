@@ -1,5 +1,6 @@
 import { createHashRouter } from 'react-router-dom'
 
+import { NotFoundPage } from '../pages/404Page'
 import { About } from '../pages/About'
 import { Demo01Page } from '../pages/Demo01'
 import Home from '../pages/Home'
@@ -17,6 +18,10 @@ const router = createHashRouter(
     {
       element: <Demo01Page />,
       path: 'workflow'
+    },
+    {
+      element: <NotFoundPage />,
+      path: '*'
     }
     // {
     //   element: <Navigate to="/demo01" />,
