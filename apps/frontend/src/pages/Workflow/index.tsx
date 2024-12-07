@@ -12,7 +12,7 @@ import { TabItem } from '../../interface/tabItem'
 import styles from './index.module.css'
 
 export const WorkflowPage = () => {
-  const [currentTab, setCurrentTab] = useState<string>(NAVDATA[0].key)
+  const [currentTab, setCurrentTab] = useState<string>(SUBNAVDATA[0].key)
 
   const changeTab = (v: TabItem) => {
     setCurrentTab(v.key)
@@ -20,15 +20,15 @@ export const WorkflowPage = () => {
 
   const renderWorkflow = () => {
     switch (currentTab) {
-      case NAVDATA[0].key:
-        return <WorkFlow1 />
-      case NAVDATA[1].key:
-        return <WorkFlow2 />
-      case NAVDATA[2].key:
-        return <WorkFlow3 />
       case SUBNAVDATA[0].key:
-        return <WorkFlow4 />
+        return <WorkFlow1 />
       case SUBNAVDATA[1].key:
+        return <WorkFlow2 />
+      case SUBNAVDATA[2].key:
+        return <WorkFlow3 />
+      case SUBNAVDATA[3].key:
+        return <WorkFlow4 />
+      case SUBNAVDATA[4].key:
         return <WorkFlow5 />
     }
   }

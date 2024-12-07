@@ -61,6 +61,8 @@
 .label {
   font-size: 14px;
   color: #fff;
+  white-space: pre-wrap;
+  text-align: left;
 }
 
 .popoverText {

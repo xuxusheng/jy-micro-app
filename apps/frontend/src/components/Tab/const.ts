@@ -1,11 +1,9 @@
-export const NAVDATA = [
-  { key: 'tab1', name: '换流变区域' },
-  { key: 'tab2', name: '阀厅' },
-  { key: 'tab3', name: '交流场' }
-]
+export const NAVDATA = [{ key: 'tab1', name: '异常流程处置助手' }]
 
 export const SUBNAVDATA = [
-  { key: 'subtab1', name: '冷却水进阀温度高' },
-  { key: 'subtab2', name: '异常流程2' },
-  { key: 'subtab3', name: '异常流程3' }
+  { key: 'subtab1', name: '阀冷设备' },
+  { key: 'subtab2', name: '直流场' },
+  { key: 'subtab3', name: '交流厂' },
+  { key: 'subtab4', name: '站用电' },
+  { key: 'subtab5', name: '接地极' }
 ]
