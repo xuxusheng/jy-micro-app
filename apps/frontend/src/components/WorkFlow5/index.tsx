@@ -1,5 +1,5 @@
 import { ReactFlowProvider } from '@xyflow/react'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import { workflowApi } from '../../api/workflow'
 import { FlowNode } from '../../interface/flowNode'

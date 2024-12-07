@@ -10,12 +10,14 @@ const CornersTab = ({
   item: TabItem
   onClick: (v: TabItem) => void
 }) => {
+  const childKey = item.children?.map((v) => v.key) || []
+
   return (
     <div
       className={
         styles.tabBorderBox +
         ' ' +
-        (currentTab === item.key ? styles.active : '')
+        ([item.key, ...childKey].includes(currentTab) ? styles.active : '')
       }
       onClick={() => onClick(item)}
     >

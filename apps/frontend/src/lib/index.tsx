@@ -19,7 +19,7 @@ export const generateTreeMap = (
     //   setRootNode(node)
     // }
 
-    map.set(node.id, node)
+    map.set(node.id, { ...node })
   })
 
   // 填充 map 中节点的 childrenNodeIds 属性
