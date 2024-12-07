@@ -27,7 +27,11 @@ const WorkFlow4 = () => {
 
   return (
     <ReactFlowProvider>
-      <FlowLayout initialEdges={edges} initialNodes={nodes}></FlowLayout>
+      <FlowLayout
+        fitViewNodeLen={7}
+        initialEdges={edges}
+        initialNodes={nodes}
+      ></FlowLayout>
     </ReactFlowProvider>
   )
 }

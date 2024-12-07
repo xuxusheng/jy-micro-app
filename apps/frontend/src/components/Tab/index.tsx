@@ -16,7 +16,7 @@ const Tab = ({
       <div className={styles.tabWrap}>
         {NAVDATA.map((v) => (
           <CornersTab
-            currentTab={currentTab}
+            currentTab={'tab1'}
             item={v}
             key={v.key}
             onClick={changeTab}

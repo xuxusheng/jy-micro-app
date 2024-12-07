@@ -79,10 +79,12 @@ const getLayoutedElements = (
 
 function LayoutFlow({
   initialEdges,
-  initialNodes
+  initialNodes,
+  fitViewNodeLen = 8
 }: {
   initialEdges: Edge[]
   initialNodes: DefaultNode[]
+  fitViewNodeLen?: number
 }) {
   const [nodes, setNodes] = useNodesState<DefaultNode>([])
   const [edges, setEdges] = useEdgesState<Edge>([])
@@ -227,7 +229,7 @@ function LayoutFlow({
       fitView
       fitViewOptions={{
         minZoom: 1,
-        nodes: nodes?.slice(0, 8)
+        nodes: nodes?.slice(0, fitViewNodeLen)
       }}
       minZoom={1}
       nodes={nodes}
@@ -239,7 +241,7 @@ function LayoutFlow({
       <Controls
         fitViewOptions={{
           minZoom: 1,
-          nodes: nodes?.slice(0, 8)
+          nodes: nodes?.slice(0, fitViewNodeLen)
         }}
         showInteractive={false}
       />
