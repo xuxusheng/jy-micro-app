@@ -1,7 +1,7 @@
 import { type TabItem } from '../../interface/tabItem'
 import CornersTab from '../CornersTab'
 import PolygonTab from '../PolygonTab'
-import { NAVDATA, SUBNAVDATA } from './const'
+import { NavData } from './const'
 import styles from './index.module.scss'
 
 const Tab = ({
@@ -11,12 +11,19 @@ const Tab = ({
   changeTab: (v: TabItem) => void
   currentTab: string
 }) => {
+  const subNavData = NavData.find((v) => {
+    if (v.children.length) {
+      return v?.children?.map((v) => v.key)?.includes(currentTab)
+    }
+    return v.key === currentTab
+  })
+
   return (
     <>
       <div className={styles.tabWrap}>
-        {NAVDATA.map((v) => (
+        {NavData.map((v) => (
           <CornersTab
-            currentTab={'tab1'}
+            currentTab={currentTab}
             item={v}
             key={v.key}
             onClick={changeTab}
@@ -24,16 +31,20 @@ const Tab = ({
         ))}
       </div>
 
-      <div className={styles.subTabWrap}>
-        {SUBNAVDATA.map((v) => (
-          <PolygonTab
-            currentTab={currentTab}
-            item={v}
-            key={v.key}
-            onClick={changeTab}
-          />
-        ))}
-      </div>
+      {!!subNavData?.children?.length && (
+        <div className={styles.subTabWrap}>
+          {subNavData?.children.map((v) => {
+            return (
+              <PolygonTab
+                currentTab={currentTab}
+                item={v}
+                key={v.key}
+                onClick={changeTab}
+              />
+            )
+          })}
+        </div>
+      )}
     </>
   )
 }

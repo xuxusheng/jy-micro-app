@@ -78,13 +78,13 @@ const getLayoutedElements = (
 }
 
 function LayoutFlow({
+  fitViewNodeLen = 8,
   initialEdges,
-  initialNodes,
-  fitViewNodeLen = 8
+  initialNodes
 }: {
+  fitViewNodeLen?: number
   initialEdges: Edge[]
   initialNodes: DefaultNode[]
-  fitViewNodeLen?: number
 }) {
   const [nodes, setNodes] = useNodesState<DefaultNode>([])
   const [edges, setEdges] = useEdgesState<Edge>([])
@@ -104,7 +104,6 @@ function LayoutFlow({
 
       getLayoutedElements(ns, es, opts).then(
         ({ edges: layoutedEdges, nodes: layoutedNodes }: any) => {
-          console.log(layoutedNodes)
           setNodes(layoutedNodes)
           setEdges(layoutedEdges)
           window.requestAnimationFrame(() => {
