@@ -1,6 +1,12 @@
 const packageName = require('./package.json').name
 
 module.exports = function override(config, env) {
+  config.devServer = {
+    static: {
+      publicPath: '/shaoshan/whjyczlcqd/'
+    }
+  }
+
   config.output.library = `${packageName}-[name]`
   config.output.libraryTarget = 'umd'
   config.output.chunkLoadingGlobal = `webpackJsonp_${packageName}`
