@@ -8,12 +8,11 @@ import {
   NotFoundException
 } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
-import ansiRegex from 'ansi-regex'
 import { Request, Response } from 'express'
 import { Result } from '../../shared/model/result'
 import {
-  BaseException,
   BadRequestException as CustomBadRequestException,
+  BaseException,
   InternalServerErrorException as CustomInternalServerErrorException,
   NotFoundException as CustomNotFoundException
 } from './custom-exception'
@@ -49,10 +48,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
         // 报错的错误为 Error 类型，主要针对没有被人为捕获的错误，例如数据库查询报错了，第三方接口调用报错了却没有 try catch 处理。
         // 如果有 errDebug 字段的话，这里最好是将内部错误放入 errDebug 字段，不直接暴露给用户（只存在于非生产环境及日志中）
         // 控制台输出的颜色去掉，换行符替换为空格
-        const debugMsg = (exception as Error).message
-          .replace(ansiRegex(), '')
-          .replace(/\n/g, ' ')
-        err = new CustomInternalServerErrorException().setErrDebug(debugMsg)
+        // const debugMsg = (exception as Error).message
+        //   .replace(ansiRegex(), '')
+        //   .replace(/\n/g, ' ')
+        err = new CustomInternalServerErrorException().setErrDebug(
+          exception.message
+        )
         break
       }
       case typeof exception === 'string': {

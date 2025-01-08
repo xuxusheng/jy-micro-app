@@ -38,10 +38,15 @@ WORKDIR /app
 # 准备容器启动脚本
 COPY --from=builder /project/app/ ./backend
 #COPY --from=builder /project/apps/backend/prisma ./backend
-COPY --from=builder /project/apps/frontend/build/ ./frontend/shaoshan/whjyczlcqd
-COPY --from=builder /project/apps/frontend/build/index.html ./frontend
+
+# 复制前端静态资源
+COPY --from=builder /project/apps/workflow-frontend/build/ ./frontend/shaoshan/whjyczlcqd
+COPY --from=builder /project/apps/gjsjjc-frontend/build/ ./frontend/shaoshan/gjsjjcqd/
+COPY --from=builder /project/apps/zhyp-frontend/build/ ./frontend/shaoshan/zhypqd/
+# 没有这一行的话，nextjs 中的 ServeStatic 会因为找不到 index.html 文件而报错退出
+COPY --from=builder /project/apps/workflow-frontend/build/index.html ./frontend
+
 COPY ./ci/entrypoint.sh /
-RUN #cp ./backend/client/* ./backend
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
 CMD ["dumb-init", "node", "backend/index.js"]

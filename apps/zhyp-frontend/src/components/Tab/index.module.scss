@@ -1,0 +1,24 @@
+.tabWrap {
+  height: 36px;
+  background-color: #102126;
+  display: flex;
+  gap: 24px;
+  padding: 8px;
+
+  .tab {
+    border: 1px solid rgb(109 215 224);
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+  }
+}
+
+.subTabWrap {
+  margin-top: 8px;
+  display: flex;
+  gap: 24px;
+  padding: 8px;
+}
