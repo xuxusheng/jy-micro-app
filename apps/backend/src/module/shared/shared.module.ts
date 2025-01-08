@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common'
-import { ShaoshanService } from './service/shaoshan.service'
+import { ShaoshanExternalApiService } from './service/shaoshan-external-api.service'
 // import { PrismaService } from './service/prisma.service'
 // import { RunnerService } from './service/runner.service'
 
 @Module({
   imports: [],
-  providers: [ShaoshanService]
+  providers: [ShaoshanExternalApiService],
+  exports: [ShaoshanExternalApiService]
   // providers: [RunnerService, PrismaService],
   // exports: [RunnerService, PrismaService]
 })

@@ -6,6 +6,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { CoreModule } from './module/core/core.module'
 import { HealthModule } from './module/health/health.module'
+import { ShaoshanModule } from './module/shaoshan/shaoshan.module'
 
 @Module({
   controllers: [AppController],
@@ -15,7 +16,8 @@ import { HealthModule } from './module/health/health.module'
       rootPath: path.join(__dirname, '..', 'frontend')
     }),
     CoreModule,
-    HealthModule
+    HealthModule,
+    ShaoshanModule
   ],
   providers: [AppService]
 })

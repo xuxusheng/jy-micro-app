@@ -16,6 +16,7 @@ import { AuthGuard } from './guard/auth.guard'
 import { ResponseInterceptor } from './interceptor/response.interceptor'
 import { AccessLogMiddleware } from './middleware/access-log.middleware'
 import { RequestIdMiddleware } from './middleware/request-id.middleware'
+import { shaoshanConfig } from './config/shaoshan.config'
 
 /**
  * CoreModule，核心模块，用于设置全局的 Guard、Pipe、Filter、Interceptor、Middleware 等等
@@ -33,7 +34,7 @@ import { RequestIdMiddleware } from './middleware/request-id.middleware'
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [jwtConfig, serverConfig]
+      load: [jwtConfig, serverConfig, shaoshanConfig]
     })
     // UserModule
   ],

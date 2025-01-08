@@ -51,9 +51,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
         // const debugMsg = (exception as Error).message
         //   .replace(ansiRegex(), '')
         //   .replace(/\n/g, ' ')
-        err = new CustomInternalServerErrorException().setErrDebug(
-          exception.message
-        )
+        err = new CustomInternalServerErrorException(
+          `服务器内部错误：${exception.message}`
+        ).setErrDebug(exception.message)
         break
       }
       case typeof exception === 'string': {
