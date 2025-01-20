@@ -3,7 +3,8 @@ import axios from 'axios'
 import { shaoshanConfig } from '../../core/config/shaoshan.config'
 import { ConfigType } from '@nestjs/config'
 import * as qs from 'qs'
-import { Dayjs } from 'dayjs' // 调用 shaoshan 站 API
+import * as dayjs from 'dayjs'
+import { Dayjs } from 'dayjs'
 
 // 调用 shaoshan 站 API
 @Injectable()
@@ -13,8 +14,15 @@ export class ShaoshanExternalApiService {
     private readonly shaoshanConf: ConfigType<typeof shaoshanConfig>
   ) {}
 
+  private readonly isDebug = process.env.DEBUG === 'true'
+
   // 获取 token
   getToken = async () => {
+    // 如果是本地开发，就随机返回一个
+    if (this.isDebug) {
+      return 'debugtoken'
+    }
+
     const { clientId, clientSecret, url } = this.shaoshanConf
 
     const headers = {
@@ -44,6 +52,20 @@ export class ShaoshanExternalApiService {
   // 批量查询实时数据
   getRealtimeData = async (keys: string[]) => {
     const { url, hwID, hwAppKey, clientId } = this.shaoshanConf
+
+    // 如果 debug，随机返回
+    if (this.isDebug) {
+      const now = dayjs()
+        .subtract(Math.floor(Math.random() * 60), 'minutes')
+        .format('YYYY-MM-DD HH:mm:ss.SSS')
+      return keys.map((key) => ({
+        fresh_time: now,
+        key,
+        quality: 1,
+        time_stamp: now,
+        value: Math.random()
+      }))
+    }
 
     const token = await this.getToken()
 

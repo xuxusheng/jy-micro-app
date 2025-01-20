@@ -2,6 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common'
 import { ShaoshanService } from './shaoshan.service'
 import { ShaoshanExternalApiService } from '../shared/service/shaoshan-external-api.service'
 import dayjs from 'dayjs'
+import { PageMiddleScreenDataDto } from './dto/page-middle-screen-data.dto'
 
 @Controller('api/shaoshan')
 export class ShaoshanController {
@@ -36,5 +37,23 @@ export class ShaoshanController {
       endTime,
       interval: 5
     })
+  }
+
+  // 查询区域可选项
+  @Get('area-options')
+  getAreaOptions() {
+    return this.shaoshanService.getAreaOptions()
+  }
+
+  // 查询设备名可选项
+  @Get('device-name-options')
+  getDeviceNameOptions() {
+    return this.shaoshanService.getDeviceNameOptions()
+  }
+
+  // 查询中屏表格数据
+  @Get('middle-screen/page')
+  getMiddleScreenPageData(@Query() dto: PageMiddleScreenDataDto) {
+    return this.shaoshanService.getMiddleScreenPageData(dto)
   }
 }
