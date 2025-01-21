@@ -1,14 +1,16 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import axios from 'axios'
 import { shaoshanConfig } from '../../core/config/shaoshan.config'
 import { ConfigType } from '@nestjs/config'
 import * as qs from 'qs'
 import * as dayjs from 'dayjs'
-import { Dayjs } from 'dayjs'
+import { Dayjs } from 'dayjs' // 调用 shaoshan 站 API
 
 // 调用 shaoshan 站 API
 @Injectable()
 export class ShaoshanExternalApiService {
+  private readonly logger = new Logger(ShaoshanExternalApiService.name)
+
   constructor(
     @Inject(shaoshanConfig.KEY)
     private readonly shaoshanConf: ConfigType<typeof shaoshanConfig>
@@ -36,6 +38,8 @@ export class ShaoshanExternalApiService {
       client_secret: clientSecret
     })
 
+    this.logger.log(`调用外部接口获取 token，参数：${JSON.stringify(data)}`)
+
     const res = await axios.request<{
       access_token: string
       expires_in: number
@@ -46,6 +50,9 @@ export class ShaoshanExternalApiService {
       headers,
       data
     })
+
+    this.logger.log(`调用外部接口获取 token，返回：${JSON.stringify(res.data)}`)
+
     return res.data.access_token
   }
 
@@ -75,6 +82,19 @@ export class ShaoshanExternalApiService {
       Authorization: `Bearer ${token}`
     }
 
+    const data = {
+      // 输入多少返回多少，采用 32 位有符号整数，最大可表示的正整数为 2,147,483,647，再大就溢出变为负数了
+      // 可以 random 一个随机正整数，然后当做接口标识，方便调试
+      id: Math.floor(Math.random() * 2147483647),
+      client_id: clientId,
+      body: {
+        datatype: 'analog',
+        keys
+      }
+    }
+
+    this.logger.log(`调用外部接口获取实时数据，参数：${JSON.stringify(data)}`)
+
     const res = await axios.request<{
       id: number
       code: number // 2023
@@ -92,31 +112,26 @@ export class ShaoshanExternalApiService {
       url: `${url}/v1/cs/realdata-service/data/realtime`,
       method: 'POST',
       headers,
-      data: {
-        // 输入多少返回多少，采用 32 位有符号整数，最大可表示的正整数为 2,147,483,647，再大就溢出变为负数了
-        // 可以 random 一个随机正整数，然后当做接口标识，方便调试
-        id: Math.floor(Math.random() * 2147483647),
-        client_id: clientId,
-        body: {
-          datatype: 'analog',
-          keys
-        }
-      }
+      data
     })
+
+    this.logger.log(
+      `调用外部接口获取实时数据，返回：${JSON.stringify(res.data)}`
+    )
 
     return res.data.body.values
   }
 
   // 批量查询历史数据
   // 公共组件支持应用按需查询指定一组遥测信号的历史数据。单次查询数据返回总量不应超过10万条，超过一定量时，返回调用失败，提示采用分批多次取数据方式获取数据，以防网络拥堵。
-  getHistoryData = async (data: {
+  getHistoryData = async (options: {
     keys: string[] // 信号索引键，需查询的信号列表
     startTime: Dayjs // 开始时间 yyyy-MM-dd HH:mm:ss.SSS
     endTime: Dayjs // 结束时间 yyyy-MM-dd HH:mm:ss.SSS
     interval: number // 取值间隔，如：5，表示五分钟取一个值
     count?: number // 是否查询统计值 0：不查询统计值 1：查询统计值
   }) => {
-    const { keys, startTime, endTime, count = 0, interval } = data
+    const { keys, startTime, endTime, count = 0, interval } = options
     const { url, hwID, hwAppKey, clientId } = this.shaoshanConf
 
     const token = await this.getToken()
@@ -126,6 +141,23 @@ export class ShaoshanExternalApiService {
       'X-HW-APPKEY': hwAppKey,
       Authorization: `Bearer ${token}`
     }
+
+    const data = {
+      // 输入多少返回多少，采用 32 位有符号整数，最大可表示的正整数为 2,147,483,647，再大就溢出变为负数了
+      // 可以 random 一个随机正整数，然后当做接口标识，方便调试
+      id: Math.floor(Math.random() * 2147483647),
+      client_id: clientId,
+      body: {
+        datatype: 'analog',
+        keys,
+        startTime: startTime.format('YYYY-MM-DD HH:mm:ss.SSS'),
+        endTime: endTime.format('YYYY-MM-DD HH:mm:ss.SSS'),
+        interval,
+        count
+      }
+    }
+
+    this.logger.log(`调用外部接口获取历史数据，参数：${JSON.stringify(data)}`)
 
     const res = await axios.request<{
       id: number
@@ -144,21 +176,12 @@ export class ShaoshanExternalApiService {
       url: `${url}/v1/cs/hisdata-service/data/history`,
       method: 'POST',
       headers,
-      data: {
-        // 输入多少返回多少，采用 32 位有符号整数，最大可表示的正整数为 2,147,483,647，再大就溢出变为负数了
-        // 可以 random 一个随机正整数，然后当做接口标识，方便调试
-        id: Math.floor(Math.random() * 2147483647),
-        client_id: clientId,
-        body: {
-          datatype: 'analog',
-          keys,
-          startTime: startTime.format('YYYY-MM-DD HH:mm:ss.SSS'),
-          endTime: endTime.format('YYYY-MM-DD HH:mm:ss.SSS'),
-          interval,
-          count
-        }
-      }
+      data
     })
+
+    this.logger.log(
+      `调用外部接口获取历史数据，返回：${JSON.stringify(res.data)}`
+    )
 
     return res.data.body.values
   }

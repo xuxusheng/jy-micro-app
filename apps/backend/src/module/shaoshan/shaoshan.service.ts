@@ -46,7 +46,9 @@ export class ShaoshanService {
       )
 
       items.forEach((item) => {
-        const realtimeData = res.find((resItem) => resItem.key === item.key)
+        const realtimeData = res.find(
+          (resItem) => String(resItem.key) === String(item.key)
+        )
 
         if (!realtimeData) {
           return
