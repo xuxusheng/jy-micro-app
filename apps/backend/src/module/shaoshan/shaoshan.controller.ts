@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common'
 import { ShaoshanService } from './shaoshan.service'
 import { ShaoshanExternalApiService } from '../shared/service/shaoshan-external-api.service'
-import dayjs from 'dayjs'
+import * as dayjs from 'dayjs'
 import { PageMiddleScreenDataDto } from './dto/page-middle-screen-data.dto'
 
 @Controller('api/shaoshan')
