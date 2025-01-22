@@ -3,27 +3,10 @@ import { HomePage } from '../pages/Home'
 
 const router = createHashRouter(
   [
-    // {
-    //   element: <Home />,
-    //   path: '/'
-    // },
-    // {
-    //   element: <About />,
-    //   path: '/about'
-    // },
-    // {
-    //   element: <WorkflowPage />,
-    //   path: 'workflow'
-    // },
     {
       element: <HomePage />,
       path: '*'
     }
-    // {
-    //   element: <Navigate to="/demo01" />,
-    //   重定向
-    // path: '*'
-    // }
   ],
   {
     // basename: '/shaoshan/whjyczlcqd'

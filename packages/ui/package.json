@@ -1,5 +1,5 @@
 {
-  "name": "gjsjjc-frontend",
+  "name": "shared-ui",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,24 +10,11 @@
     "@types/node": "^22.10.5",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@xyflow/react": "^12.3.6",
     "antd": "^5.23.0",
-    "axios": "^1.7.9",
-    "elkjs": "latest",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0",
-    "react-scripts": "5.0.1",
     "sass": "^1.83.1",
-    "shared-ui": "workspace:*",
     "typescript": "^5.7.2"
-  },
-  "scripts": {
-    "start": "react-app-rewired start",
-    "dev": "cross-env PORT=5174  react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
@@ -41,9 +28,11 @@
       "last 1 safari version"
     ]
   },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && sass src/scss/index.scss ./dist/css/index.css"
+  },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "cross-env": "^7.0.3",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-perfectionist": "^3.9.1",
@@ -52,7 +41,13 @@
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
     "prettier-plugin-packagejson": "^2.5.6",
-    "react-app-rewired": "^2.2.1",
     "typescript-eslint": "^8.19.1"
+  },
+  "exports": {
+    "./components/*": {
+      "default": "./dist/*.js",
+      "types": "./src/components/index.ts"
+    },
+    "./dist/css/index.css": "./dist/css/index.css"
   }
 }

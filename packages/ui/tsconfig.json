@@ -17,10 +17,11 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "outDir": "./dist",
   },
   "include": [
-    "src"
-  ]
+    "./src/**/*.tsx"
+  ],
+  "exclude": ["node_modules", "dist"]
 }
