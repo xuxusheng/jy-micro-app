@@ -1,7 +1,7 @@
 FROM node:22-slim AS builder
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && corepack prepare pnpm@10.2.0 --activate
+RUN npm i -g pnpm
 WORKDIR /project
 
 RUN apt update \
@@ -23,7 +23,7 @@ ENV TZ=Asia/Shanghai \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt update \
-    && apt install -y tzdata openssl dumb-init \
+    && apt install -y dumb-init openssl tzdata \
     && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata \
@@ -31,7 +31,7 @@ RUN apt update \
     && apt-get clean
 
 # 安装 prisma，用于数据库迁移
-RUN #npm i -g prisma
+# RUN npm i -g prisma
 
 WORKDIR /app
 
