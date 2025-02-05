@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common'
 import { PageMiddleScreenDataDto } from './dto/page-middle-screen-data.dto'
 import { middleScreenData } from './data'
 import { ShaoshanExternalApiService } from '../shared/service/shaoshan-external-api.service'
+import { GetHistoryDataDto } from './dto/get-history-data.dto'
+import * as dayjs from 'dayjs'
+import { BadRequestException } from '../core/exception/custom-exception'
 
 type PageMiddleScreenData = (typeof middleScreenData)[0] & {
   value?: number
@@ -71,5 +74,26 @@ export class ShaoshanService {
 
   getDeviceNameOptions() {
     return Array.from(new Set(middleScreenData.map((item) => item.deviceName)))
+  }
+
+  // 查询历史数据
+  async getHistoryData(dto: GetHistoryDataDto) {
+    const { key } = dto
+
+    const startTime = dayjs(dto.startTime)
+    const endTime = dayjs(dto.endTime)
+
+    // 开始时间必须早于结束时间
+    if (!startTime.isBefore(endTime)) {
+      throw new BadRequestException('开始时间必须早于结束时间')
+    }
+
+    const res = await this.shaoShanExternalService.getHistoryData({
+      keys: [key],
+      startTime,
+      endTime
+    })
+
+    return res[0]
   }
 }

@@ -3,6 +3,7 @@ import { ShaoshanService } from './shaoshan.service'
 import { ShaoshanExternalApiService } from '../shared/service/shaoshan-external-api.service'
 import * as dayjs from 'dayjs'
 import { PageMiddleScreenDataDto } from './dto/page-middle-screen-data.dto'
+import { GetHistoryDataDto } from './dto/get-history-data.dto'
 
 @Controller('api/shaoshan')
 export class ShaoshanController {
@@ -34,8 +35,7 @@ export class ShaoshanController {
     return this.shaoshanExternalApiService.getHistoryData({
       keys: [key || '4222126589739011'],
       startTime,
-      endTime,
-      interval: 5
+      endTime
     })
   }
 
@@ -55,5 +55,11 @@ export class ShaoshanController {
   @Get('middle-screen/page')
   getMiddleScreenPageData(@Query() dto: PageMiddleScreenDataDto) {
     return this.shaoshanService.getMiddleScreenPageData(dto)
+  }
+
+  // 查询指定测点的历史数据
+  @Get('history-data')
+  getHistoryData(@Query() dto: GetHistoryDataDto) {
+    return this.shaoshanService.getHistoryData(dto)
   }
 }

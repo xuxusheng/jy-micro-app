@@ -4,7 +4,22 @@ import { shaoshanConfig } from '../../core/config/shaoshan.config'
 import { ConfigType } from '@nestjs/config'
 import * as qs from 'qs'
 import * as dayjs from 'dayjs'
-import { Dayjs } from 'dayjs' // 调用 shaoshan 站 API
+import { Dayjs } from 'dayjs'
+
+interface GetHistoryDataRes {
+  id: number
+  code: number // 2026
+  message: string // ""
+  body: {
+    values: Array<{
+      key: string
+      vals: Array<{
+        time: string // 2024-12-10 22:36:11.331
+        value: number
+      }>
+    }>
+  }
+}
 
 // 调用 shaoshan 站 API
 @Injectable()
@@ -128,10 +143,9 @@ export class ShaoshanExternalApiService {
     keys: string[] // 信号索引键，需查询的信号列表
     startTime: Dayjs // 开始时间 yyyy-MM-dd HH:mm:ss.SSS
     endTime: Dayjs // 结束时间 yyyy-MM-dd HH:mm:ss.SSS
-    interval: number // 取值间隔，如：5，表示五分钟取一个值
     count?: number // 是否查询统计值 0：不查询统计值 1：查询统计值
   }) => {
-    const { keys, startTime, endTime, count = 0, interval } = options
+    const { keys, startTime, endTime, count = 0 } = options
     const { url, hwID, hwAppKey, clientId } = this.shaoshanConf
 
     const token = await this.getToken()
@@ -141,6 +155,11 @@ export class ShaoshanExternalApiService {
       'X-HW-APPKEY': hwAppKey,
       Authorization: `Bearer ${token}`
     }
+
+    // 开始和结束时间之间，最多采样一百个点，需要计算一下间隔设置为多少合适
+    const intervalMinute = Math.floor(
+      dayjs(endTime).diff(startTime, 'second') / 100 / 60
+    )
 
     const data = {
       // 输入多少返回多少，采用 32 位有符号整数，最大可表示的正整数为 2,147,483,647，再大就溢出变为负数了
@@ -152,27 +171,36 @@ export class ShaoshanExternalApiService {
         keys,
         startTime: startTime.format('YYYY-MM-DD HH:mm:ss.SSS'),
         endTime: endTime.format('YYYY-MM-DD HH:mm:ss.SSS'),
-        interval,
+        interval: intervalMinute, // 取值间隔，如：5，表示五分钟取一个值
         count
       }
     }
 
     this.logger.log(`调用外部接口获取历史数据，参数：${JSON.stringify(data)}`)
 
-    const res = await axios.request<{
-      id: number
-      code: number // 2026
-      message: string // ""
-      body: {
-        values: Array<{
-          key: string
-          vals: Array<{
-            time: string // 2024-12-10 22:36:11.331
-            value: number
-          }>
-        }>
+    // 如果是 debug ，造一批数据随机返回
+    if (this.isDebug) {
+      const now = dayjs()
+      const start = now.subtract(6, 'hour')
+      const interval = 5
+
+      const values = [
+        {
+          key: keys[0],
+          vals: []
+        }
+      ]
+      for (let i = 0; i < 100; i++) {
+        const time = start.add(i * interval, 'minute')
+        values[0].vals.push({
+          time: time.format('YYYY-MM-DD HH:mm:ss.SSS'),
+          value: Math.random()
+        })
       }
-    }>({
+      return values
+    }
+
+    const res = await axios.request<GetHistoryDataRes>({
       url: `${url}/v1/cs/hisdata-service/data/history`,
       method: 'POST',
       headers,
