@@ -4,7 +4,7 @@ import {Header} from "shared-ui/components/Header";
 import "shared-ui/dist/css/index.css"
 import {PolygonTab} from "shared-ui/components/PolygonTab";
 
-import {NavData} from "./const";
+
 import {TabItem} from "../../interface/tabItem";
 import styles from "./index.module.scss";
 import {Button, Input, Select, Table} from "antd";
@@ -112,7 +112,7 @@ export const HomePage: FC = () => {
     const [loading, setLoading] = useState<boolean>(true)
 
     const [currentTab, setCurrentTab] = useState<string>(
-        NavData[0].key
+        areaData?.[0]
     )
 
     const changeTab = (v: TabItem) => {
