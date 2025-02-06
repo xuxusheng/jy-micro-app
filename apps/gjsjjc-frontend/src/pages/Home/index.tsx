@@ -135,13 +135,16 @@ export const HomePage: FC = () => {
         api.getMiddleScreenPage({area, pn, ps, deviceName, isTop: false, dataName}).then(res => {
             setTableData(res.data.data)
             setLoading(false)
-        }).catch(() => {
+        }).catch((err) => {
+            console.error(err)
             setLoading(false)
         })
 
         if (getTop) {
             api.getMiddleScreenPage({area, pn: 1, ps: 1000, deviceName: '', isTop: true, dataName: ''}).then(res => {
                 setTopData(res.data.data)
+            }).catch((err) => {
+                console.error(err)
             })
         }
     }
@@ -222,7 +225,7 @@ export const HomePage: FC = () => {
             <div className={styles.dataWrap}>
                 {topData?.items?.map((v: any, i: number) => (
                     <div className={styles.dataItem} key={i}>
-                        <div className={styles.dataTitle}>{v.dataName}({v.unit})：</div>
+                        <div className={styles.dataTitle}>{v.deviceName}.{v.dataName}({v.unit})：</div>
                         <div>{v.value?.toFixed(2)}</div>
                     </div>
                 ))}
