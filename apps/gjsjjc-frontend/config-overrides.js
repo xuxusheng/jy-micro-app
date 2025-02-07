@@ -4,7 +4,7 @@ module.exports = function override(config, env) {
   config.devServer = {
     static: {
       // 关键数据监测前端
-      publicPath: '/shaoshan/gjsjjcqd/'
+      publicPath: '/shaoshan/whjygjsjjcqd/'
     }
   }
 
@@ -12,6 +12,6 @@ module.exports = function override(config, env) {
   config.output.libraryTarget = 'umd'
   config.output.chunkLoadingGlobal = `webpackJsonp_${packageName}`
   // 关键数据监测前端
-  config.output.publicPath = `/shaoshan/gjsjjcqd/`
+  config.output.publicPath = `/shaoshan/whjygjsjjcqd/`
   return config
 }

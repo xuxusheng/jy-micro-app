@@ -41,9 +41,9 @@ COPY --from=builder /project/app/ ./backend
 
 # 复制前端静态资源
 COPY --from=builder /project/apps/workflow-frontend/build/ ./frontend/shaoshan/whjyczlcqd
-COPY --from=builder /project/apps/gjsjjc-frontend/build/ ./frontend/shaoshan/gjsjjcqd/
-COPY --from=builder /project/apps/zhyp-frontend/build/ ./frontend/shaoshan/zhypqd/
-# 没有这一行的话，nextjs 中的 ServeStatic 会因为找不到 index.html 文件而报错退出
+COPY --from=builder /project/apps/gjsjjc-frontend/build/ ./frontend/shaoshan/whjygjsjjcqd/
+COPY --from=builder /project/apps/zhyp-frontend/build/ ./frontend/shaoshan/whjyzhypqd/
+# 没有这一行的话，nestjs 中的 ServeStatic 会因为找不到 index.html 文件而报错退出
 COPY --from=builder /project/apps/workflow-frontend/build/index.html ./frontend
 
 COPY ./ci/entrypoint.sh /
