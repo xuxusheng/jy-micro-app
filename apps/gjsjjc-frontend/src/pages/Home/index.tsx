@@ -4,11 +4,12 @@ import {Header} from "shared-ui/components/Header";
 import "shared-ui/dist/css/index.css"
 import {PolygonTab} from "shared-ui/components/PolygonTab";
 
-import {NavData} from "./const";
+
 import {TabItem} from "../../interface/tabItem";
 import styles from "./index.module.scss";
 import {Button, Input, Select, Table} from "antd";
 import {api} from "../../api";
+import HistoryModal from "./HistoryModal";
 
 
 // function formatDate(date: Date, format: string) {
@@ -37,63 +38,6 @@ import {api} from "../../api";
 //     return format;
 // }
 
-const columns = [
-    {
-        title: '设备名',
-        dataIndex: 'deviceName',
-        key: 'deviceName',
-    },
-    {
-        title: '数据名',
-        dataIndex: 'dataName',
-        key: 'dataName',
-    },
-    {
-        title: '当前值',
-        dataIndex: 'value',
-        key: 'value',
-        render: (text: number) => {
-            return text.toFixed(2)
-        }
-    },
-    {
-        title: '单位',
-        dataIndex: 'unit',
-        key: 'unit',
-    },
-    {
-        title: '日最大值',
-        dataIndex: 'max',
-        key: 'max',
-    },
-    {
-        title: '日最小值',
-        dataIndex: 'min',
-        key: 'min',
-    },
-    {
-        title: '上送时间',
-        dataIndex: 'timestamp',
-        key: 'timestamp',
-        render: (text: string) => {
-            return text
-        }
-    },
-    {
-        title: '正常范围',
-        dataIndex: 'range',
-        key: 'range',
-    },
-    {
-        title: '趋势',
-        dataIndex: 'trend',
-        key: 'trend',
-        render: () => {
-            return <a>查看</a>
-        }
-    },
-];
-
 
 export const HomePage: FC = () => {
 
@@ -112,8 +56,15 @@ export const HomePage: FC = () => {
     const [loading, setLoading] = useState<boolean>(true)
 
     const [currentTab, setCurrentTab] = useState<string>(
-        NavData[0].key
+        areaData?.[0]
     )
+
+    const [openModal, setOpenModal] = useState<boolean>(false)
+    const [currentData, setCurrentData] = useState<{
+        deviceName: string;
+        dataName: string;
+        key: string;
+    }>({deviceName: '', dataName: '', key: ''})
 
     const changeTab = (v: TabItem) => {
         setCurrentTab(v.key)
@@ -135,16 +86,80 @@ export const HomePage: FC = () => {
         api.getMiddleScreenPage({area, pn, ps, deviceName, isTop: false, dataName}).then(res => {
             setTableData(res.data.data)
             setLoading(false)
-        }).catch(() => {
+        }).catch((err) => {
+            console.error(err)
             setLoading(false)
         })
 
         if (getTop) {
             api.getMiddleScreenPage({area, pn: 1, ps: 1000, deviceName: '', isTop: true, dataName: ''}).then(res => {
                 setTopData(res.data.data)
+            }).catch((err) => {
+                console.error(err)
             })
         }
     }
+
+
+    const columns = [
+        {
+            title: '设备名',
+            dataIndex: 'deviceName',
+            key: 'deviceName',
+        },
+        {
+            title: '数据名',
+            dataIndex: 'dataName',
+            key: 'dataName',
+        },
+        {
+            title: '当前值',
+            dataIndex: 'value',
+            key: 'value',
+            render: (text: number) => {
+                return text.toFixed(2)
+            }
+        },
+        {
+            title: '单位',
+            dataIndex: 'unit',
+            key: 'unit',
+        },
+        {
+            title: '日最大值',
+            dataIndex: 'max',
+            key: 'max',
+        },
+        {
+            title: '日最小值',
+            dataIndex: 'min',
+            key: 'min',
+        },
+        {
+            title: '上送时间',
+            dataIndex: 'timestamp',
+            key: 'timestamp',
+            render: (text: string) => {
+                return text
+            }
+        },
+        {
+            title: '正常范围',
+            dataIndex: 'range',
+            key: 'range',
+        },
+        {
+            title: '趋势',
+            dataIndex: 'trend',
+            key: 'trend',
+            render: (_: any, v: any) => {
+                return <a onClick={() => {
+                    setOpenModal(true);
+                    setCurrentData({key: v.key, dataName: v.dataName, deviceName: v.deviceName})
+                }}>查看</a>
+            }
+        },
+    ];
 
 
     useEffect(() => {
@@ -208,7 +223,7 @@ export const HomePage: FC = () => {
     return <div className={styles.container}>
         <Header title={'关键数据检测'}>
             <div className={styles.tabWrap}>
-                {areaData.map((v, i) => (
+                {areaData?.map((v, i) => (
                     <PolygonTab currentTab={currentTab}
                                 item={{key: v, name: v}}
                                 key={i}
@@ -222,7 +237,7 @@ export const HomePage: FC = () => {
             <div className={styles.dataWrap}>
                 {topData?.items?.map((v: any, i: number) => (
                     <div className={styles.dataItem} key={i}>
-                        <div className={styles.dataTitle}>{v.dataName}({v.unit})：</div>
+                        <div className={styles.dataTitle}>{v.deviceName}.{v.dataName}({v.unit})：</div>
                         <div>{v.value?.toFixed(2)}</div>
                     </div>
                 ))}
@@ -261,5 +276,9 @@ export const HomePage: FC = () => {
             </div>
 
         </div>
+
+        <HistoryModal open={openModal} close={() => {
+            setOpenModal(false)
+        }} currentData={currentData}/>
     </div>
 }

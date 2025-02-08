@@ -1,0 +1,163 @@
+.container {
+  background-color: #071219;
+  height: calc(100vh - 48px);
+  /*width: calc(100vw - 48px);*/
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
+.tabWrap {
+  display: flex;
+  gap: 36px;
+  position: absolute;
+  z-index: 2;
+  top: 30px;
+  right: 200px;
+}
+
+.tab1Wrap {
+  display: flex;
+  gap: 36px;
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+}
+
+.contentWrap {
+  flex: 1;
+  display: flex;
+  border: 1px solid rgb(109 215 224);
+  border-top: 0;
+  padding: 40px 16px;
+  overflow: hidden;
+  gap: 24px;
+}
+
+.contentLeftWrap {
+  flex: 0 0 240px;
+  overflow: auto;
+  height: 100%;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    height: 4px;
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    webkit-box-shadow: none;
+    background-color: #565c61;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    webkit-box-shadow: none;
+    background-color: transparent;
+    border-radius: 4px;
+  }
+
+  :global(.ant-tree) {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 0;
+    color: #fff !important;
+  }
+
+  :global(.ant-tree .ant-tree-treenode:not(.ant-tree-treenode-disabled) .ant-tree-node-content-wrapper:hover) {
+    color: #fff !important;
+  }
+
+  :global(.ant-tree .ant-tree-treenode:not(.ant-tree-treenode-disabled) .ant-tree-node-content-wrapper:hover ) {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  :global(.ant-tree .ant-tree-treenode:not(.ant-tree-treenode-disabled) .ant-tree-node-content-wrapper.ant-tree-node-selected) {
+    color: rgb(109, 215, 224) !important;
+    background-color: transparent !important;
+  }
+}
+
+.contentRightWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timerWrap {
+  display: flex;
+  gap: 24px;
+
+
+  :global(.ant-picker-outlined) {
+    background: transparent !important;
+    border-color: #565c61 !important;
+    color: #fff !important;
+  }
+
+  :global(.ant-picker .ant-picker-input-placeholder >input) {
+    color: #868686 !important;
+  }
+
+  :global(.ant-picker-range .ant-picker-active-bar) {
+    background-color: #21777b !important;
+  }
+
+  :global(.ant-picker .ant-picker-clear) {
+    color: #868686 !important;
+  }
+
+  :global(.ant-picker .ant-picker-input >input::placeholder) {
+    color: #868686 !important;
+  }
+
+  :global(.ant-picker .ant-picker-separator) {
+    color: #868686 !important;
+  }
+
+  :global(.ant-picker .ant-picker-suffix) {
+    color: #868686 !important;
+  }
+
+
+  :global(.ant-btn-variant-solid:not(:disabled):not(.ant-btn-disabled)) {
+    background: #2a8488;
+    box-shadow: none;
+
+    &:hover {
+      background: #21777b;
+    }
+  }
+
+
+  :global(.ant-btn-color-default) {
+    background-color: transparent !important;
+    border: 1px solid #2a8488 !important;
+    color: #66f8ff !important;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      color: #11f2fc !important;
+    }
+  }
+
+}
+
+.chartWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chartTitle {
+  color: #fff;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+}
+.chartContent {
+  width: 100%;
+  height: 400px;
+}

@@ -5,8 +5,7 @@ import axios, {AxiosInstance, AxiosResponse} from 'axios';
 const createAxiosInstance = (): AxiosInstance => {
     const instance = axios.create({
         validateStatus: () => true, // 不管返回的 http 状态码是多少，都不抛出错误，在响应拦截器中进行处理
-        baseURL: 'http://192.168.4.148:3000/api/shaoshan',
-        withCredentials: true,
+        baseURL: 'http://localhost:3000/api/shaoshan',
     });
 
 
@@ -42,19 +41,10 @@ export class Api {
         return this.axios.get('/area-options');
     }
 
-    getDeviceNameOptions = () => {
-        return this.axios.get('/device-name-options');
+    getChartData = (params:any): Promise<AxiosResponse<any>> => {
+        return this.axios.get('/history-data',{params});
     }
 
-    getMiddleScreenPage = (params: any) => {
-        return this.axios.get('/middle-screen/page', {
-            params
-        });
-    }
-
-    getHistoryData = (params: any): Promise<AxiosResponse<any>> => {
-        return this.axios.get('/history-data', {params});
-    }
 }
 
 export const api = new Api();
