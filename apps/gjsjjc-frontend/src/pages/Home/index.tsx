@@ -253,7 +253,8 @@ export const HomePage: FC = () => {
 
             <div className={styles.searchWrap}>
                 <Select placeholder={'设备检索 '} options={deviceData?.map(v => ({key: v, value: v}))}
-                        style={{width: '20%'}} value={device} onChange={v => setDevice(v)}></Select>
+                        style={{width: '20%'}} value={device} onChange={v => setDevice(v)}
+                        getPopupContainer={e => e.parentElement}></Select>
                 <Input type="text" placeholder={'关键字检索'} style={{width: '30%'}} value={searchKey}
                        onChange={e => setSearchKey(e.target.value)}/>
                 <Button type={'primary'} onClick={search}>确认</Button>

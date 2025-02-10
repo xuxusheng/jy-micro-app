@@ -99,7 +99,7 @@ const HistoryModal: FC<Props> = ({open, close, currentData}) => {
 
 
     return <Modal title={currentData?.deviceName + ' ' + currentData?.dataName + " 趋势"} open={open} onCancel={close}
-                  footer={null} width={'80vw'} wrapClassName={styles.modalWrap}>
+                  footer={null} width={'80vw'} wrapClassName={styles.modalWrap} getContainer={false} >
         <div className={styles.historyModal} id={'chart'}/>
     </Modal>
 }
