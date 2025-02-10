@@ -11,7 +11,7 @@ env:
   # 镜像地址
   IMAGE_NAME: ${{ vars.DOCKER_IMAGE }}
   # 镜像标签
-  IMAGE_TAG: ${{ github.ref }}
+  IMAGE_TAG: ${{ github.ref_name }}
 
 jobs:
   build-and-push:
