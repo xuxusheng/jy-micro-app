@@ -32,7 +32,9 @@ export class ShaoshanExternalApiService {
     @Inject(shaoshanConfig.KEY)
     private readonly shaoshanConf: ConfigType<typeof shaoshanConfig>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
-  ) {}
+  ) {
+    console.log(`是否 DEBUG 模式：${this.isDebug}`)
+  }
 
   private readonly isDebug = process.env.DEBUG === 'true'
 
