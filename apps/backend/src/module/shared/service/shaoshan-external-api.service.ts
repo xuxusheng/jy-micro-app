@@ -5,6 +5,8 @@ import { ConfigType } from '@nestjs/config'
 import * as qs from 'qs'
 import * as dayjs from 'dayjs'
 import { Dayjs } from 'dayjs'
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cron, CronExpression } from '@nestjs/schedule'
 
 interface GetHistoryDataRes {
   id: number
@@ -28,16 +30,31 @@ export class ShaoshanExternalApiService {
 
   constructor(
     @Inject(shaoshanConfig.KEY)
-    private readonly shaoshanConf: ConfigType<typeof shaoshanConfig>
+    private readonly shaoshanConf: ConfigType<typeof shaoshanConfig>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
   private readonly isDebug = process.env.DEBUG === 'true'
 
+  // 每两个小时自动刷新一下 token
+  @Cron(CronExpression.EVERY_2_HOURS)
+  async refreshToken() {
+    const token = await this.getToken(false)
+    this.logger.log(`刷新 token 成功，token：${token}`)
+  }
+
   // 获取 token
-  getToken = async () => {
+  getToken = async (useCache: boolean = true) => {
     // 如果是本地开发，就随机返回一个
     if (this.isDebug) {
       return 'debugtoken'
+    }
+
+    // 判断是否存在缓存，存在就直接返回
+    const oldToken = await this.cacheManager.get<string>('shaoshan-token')
+
+    if (useCache && oldToken) {
+      return oldToken
     }
 
     const { clientId, clientSecret, url } = this.shaoshanConf
@@ -68,7 +85,11 @@ export class ShaoshanExternalApiService {
 
     this.logger.log(`调用外部接口获取 token，返回：${JSON.stringify(res.data)}`)
 
-    return res.data.access_token
+    const token = res.data.access_token
+
+    await this.cacheManager.set('shaoshan-token', token, 1000 * 60 * 60 * 12)
+
+    return token
   }
 
   // 批量查询实时数据

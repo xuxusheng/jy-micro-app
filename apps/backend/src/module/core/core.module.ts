@@ -1,22 +1,18 @@
-import { CacheModule } from '@nestjs/cache-manager'
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  ValidationPipe
-} from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import { flattenDepth } from 'lodash' // import { UserModule } from '../user/user.module'
-import { jwtConfig } from './config/jwt.config'
-import { serverConfig } from './config/server.config'
-import { BadRequestException } from './exception/custom-exception'
-import { HttpExceptionFilter } from './exception/http-exception.filter'
-import { AuthGuard } from './guard/auth.guard'
-import { ResponseInterceptor } from './interceptor/response.interceptor'
-import { AccessLogMiddleware } from './middleware/access-log.middleware'
-import { RequestIdMiddleware } from './middleware/request-id.middleware'
-import { shaoshanConfig } from './config/shaoshan.config'
+import {CacheModule} from '@nestjs/cache-manager'
+import {MiddlewareConsumer, Module, NestModule, ValidationPipe} from '@nestjs/common'
+import {ConfigModule} from '@nestjs/config'
+import {APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE} from '@nestjs/core'
+import {flattenDepth} from 'lodash' // import { UserModule } from '../user/user.module'
+import {jwtConfig} from './config/jwt.config'
+import {serverConfig} from './config/server.config'
+import {BadRequestException} from './exception/custom-exception'
+import {HttpExceptionFilter} from './exception/http-exception.filter'
+import {AuthGuard} from './guard/auth.guard'
+import {ResponseInterceptor} from './interceptor/response.interceptor'
+import {AccessLogMiddleware} from './middleware/access-log.middleware'
+import {RequestIdMiddleware} from './middleware/request-id.middleware'
+import {shaoshanConfig} from './config/shaoshan.config'
+import {ScheduleModule} from '@nestjs/schedule'
 
 /**
  * CoreModule，核心模块，用于设置全局的 Guard、Pipe、Filter、Interceptor、Middleware 等等
@@ -26,6 +22,7 @@ import { shaoshanConfig } from './config/shaoshan.config'
  */
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     // 缓存模块
     CacheModule.register({
       isGlobal: true
