@@ -106,7 +106,8 @@ const HistoryModal: FC<Props> = ({ open, close, currentData }) => {
       open={open}
       style={{
         top: 140,
-        zIndex: 99999
+        zIndex: 99999,
+        width: 1024
       }}
       onCancel={close}
       footer={null}
