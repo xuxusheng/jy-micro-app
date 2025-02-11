@@ -268,14 +268,14 @@ export const HomePage: FC = () => {
               <div>{v.value?.toFixed(2)}</div>
             </div>
           ))}
-          <div className={styles.dataItem}>
-            <div className={styles.dataTitle}>数据4：</div>
-            <div className={styles.dataTagSuccess}>正常</div>
-          </div>
-          <div className={styles.dataItem}>
-            <div className={styles.dataTitle}>数据4：</div>
-            <div className={styles.dataTagError}>异常</div>
-          </div>
+          {/*<div className={styles.dataItem}>*/}
+          {/*  <div className={styles.dataTitle}>数据4：</div>*/}
+          {/*  <div className={styles.dataTagSuccess}>正常</div>*/}
+          {/*</div>*/}
+          {/*<div className={styles.dataItem}>*/}
+          {/*  <div className={styles.dataTitle}>数据4：</div>*/}
+          {/*  <div className={styles.dataTagError}>异常</div>*/}
+          {/*</div>*/}
         </div>
 
         <div className={styles.searchWrap}>
