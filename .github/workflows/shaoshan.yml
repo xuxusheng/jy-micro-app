@@ -1,8 +1,8 @@
-name: 测试环境工作流
+name: 韶山站工作流
 on:
   push:
     tags:
-      - 'test-*'
+      - 'shaoshan-*'
 env:
   # 仓库名称
   PROJECT_NAME: ${{ github.event.repository.name }}
@@ -11,7 +11,7 @@ env:
   # 镜像地址
   IMAGE_NAME: ${{ vars.DOCKER_IMAGE }}
   # 镜像标签
-  IMAGE_TAG: ${{ github.ref }}
+  IMAGE_TAG: ${{ github.ref_name }}
 
 jobs:
   build-and-push:
@@ -43,7 +43,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           file: ./ci/Dockerfile
-          platforms: linux/amd64
+          # platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/arm64
           push: true
           tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
@@ -52,35 +53,3 @@ jobs:
           echo "镜像地址：$IMAGE_NAME"
           echo "镜像标签：$IMAGE_TAG"
           echo "镜像摘要：${{ steps.docker_build.outputs.digest }}"
-
-  deploy-to-dev:
-    name: 发布到 GitOps 仓库（开发环境）
-    needs:
-      - build-and-push
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 拉取代码
-        uses: actions/checkout@v4
-        with:
-          repository: xuxusheng/gitops-configs
-          token: ${{ secrets.GITOPS_CONFIGS_TOKEN }}
-
-      - name: 准备 Kustomize 环境
-        uses: imranismail/setup-kustomize@v2
-
-      - name: 修改镜像版本号
-        run: |
-          cd app/$PROJECT_NAME/dev
-          kustomize edit set image $IMAGE_NAME:$IMAGE_TAG
-
-      - name: 提交并推送代码
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: |-
-            chore(${{ env.PROJECT_NAME }}): ${{ github.event.head_commit.message }}
-
-            Message: ${{ github.event.head_commit.message }}
-            Project: ${{ env.PROJECT_NAME }}
-            Image: ${{ env.IMAGE_NAME }}
-            Tag：${{ env.IMAGE_TAG }}
