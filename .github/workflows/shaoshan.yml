@@ -1,8 +1,8 @@
 name: 韶山站工作流
 on:
   push:
-    tags:
-      - 'shaoshan-*'
+    branches:
+      - shaoshan
 env:
   # 仓库名称
   PROJECT_NAME: ${{ github.event.repository.name }}
@@ -11,7 +11,7 @@ env:
   # 镜像地址
   IMAGE_NAME: ${{ vars.DOCKER_IMAGE }}
   # 镜像标签
-  IMAGE_TAG: ${{ github.ref_name }}
+  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   build-and-push:
@@ -43,7 +43,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           file: ./ci/Dockerfile
-          # platforms: linux/amd64,linux/arm64,linux/arm/v7
+          #          platforms: linux/amd64,linux/arm64,linux/arm/v7
           platforms: linux/arm64
           push: true
           tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
