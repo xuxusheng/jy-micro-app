@@ -5,7 +5,8 @@ import axios, {AxiosInstance, AxiosResponse} from 'axios';
 const createAxiosInstance = (): AxiosInstance => {
     const instance = axios.create({
         validateStatus: () => true, // 不管返回的 http 状态码是多少，都不抛出错误，在响应拦截器中进行处理
-        baseURL: 'http://192.168.4.148:3000/api/shaoshan'
+        // baseURL: 'http://192.168.4.148:3000/api/shaoshan'
+        baseURL: 'https://jy-micro-app.dev.xuxusheng.com/api/shaoshan'
     });
 
 
