@@ -104,6 +104,10 @@ const HistoryModal: FC<Props> = ({ open, close, currentData }) => {
     <Modal
       title={currentData?.deviceName + ' ' + currentData?.dataName + ' 趋势'}
       open={open}
+      style={{
+        top: 140,
+        zIndex: 99999
+      }}
       onCancel={close}
       footer={null}
       width={'80vw'}
