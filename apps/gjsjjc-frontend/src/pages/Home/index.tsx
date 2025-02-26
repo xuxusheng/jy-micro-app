@@ -94,7 +94,7 @@ export const HomePage: FC = () => {
   ) => {
     setLoading(true)
     api
-      .getMiddleScreenPage({ pn, ps, deviceName, isTop: false, dataName })
+      .getMiddleScreenPage({ pn, ps, deviceName, dataName })
       .then((res) => {
         setTableData(res.data.data)
         setLoading(false)
@@ -300,6 +300,7 @@ export const HomePage: FC = () => {
             options={deviceData?.map((v) => ({ key: v, value: v }))}
             style={{ width: '20%' }}
             value={device}
+            allowClear={true}
             onChange={(v) => setDevice(v)}
             getPopupContainer={(e) => e.parentElement}
           ></Select>
@@ -308,6 +309,7 @@ export const HomePage: FC = () => {
             placeholder={'关键字检索'}
             style={{ width: '30%' }}
             value={searchKey}
+            allowClear={true}
             onChange={(e) => setSearchKey(e.target.value)}
           />
           <Button type={'primary'} onClick={search}>
