@@ -97,7 +97,7 @@ export class ShaoshanExternalApiService {
   // 批量查询实时数据
   getRealtimeData = async (
     keys: string[],
-    datatype: 'datatype' | 'state' = 'datatype'
+    datatype: 'analog' | 'state' = 'analog'
   ) => {
     const { url, hwID, hwAppKey, clientId } = this.shaoshanConf
 
