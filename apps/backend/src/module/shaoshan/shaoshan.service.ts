@@ -128,7 +128,7 @@ export class ShaoshanService {
     )
 
     return measurementPoints.map(({ key, area, deviceName }) => {
-      const data = res.find((item) => item.key === key)
+      const data = res.find((item) => item.key == key)
       return {
         key,
         area,
