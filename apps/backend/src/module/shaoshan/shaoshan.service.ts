@@ -123,7 +123,8 @@ export class ShaoshanService {
     ].filter(({ area }) => dto.area === area)
 
     const res = await this.shaoShanExternalService.getRealtimeData(
-      measurementPoints.map((item) => item.key)
+      measurementPoints.map((item) => item.key),
+      'state'
     )
 
     return measurementPoints.map(({ key, area, deviceName }) => {
