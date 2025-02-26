@@ -85,7 +85,7 @@ export const HomePage: FC = () => {
 
   const listMiddleScreenStatus = async (area: string) => {
     const res = await api.listMiddleScreenStatus({ area })
-    setStatusData(res.data)
+    setStatusData(res.data?.data || [])
   }
 
   const getMiddleScreenPage = (
@@ -203,6 +203,8 @@ export const HomePage: FC = () => {
 
         setDeviceData(deviceRes?.data?.data)
         setDevice(deviceRes?.data?.data?.[0])
+
+        listMiddleScreenStatus(areaRes?.data?.data?.[0])
 
         getMiddleScreenPage(
           {

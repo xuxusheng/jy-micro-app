@@ -54,13 +54,13 @@ export class Api {
   }
 
   listMiddleScreenStatus = (params: { area: string }) => {
-    return this.axios.get<
-      {
+    return this.axios.get<{
+      data: {
         key: string
-        value: number,
+        value: number
         deviceName: string
       }[]
-    >('/middle-screen/status', { params })
+    }>('/middle-screen/status', { params })
   }
 }
 
