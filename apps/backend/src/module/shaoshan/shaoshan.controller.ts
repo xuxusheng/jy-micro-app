@@ -4,6 +4,7 @@ import { ShaoshanExternalApiService } from '../shared/service/shaoshan-external-
 import * as dayjs from 'dayjs'
 import { PageMiddleScreenDataDto } from './dto/page-middle-screen-data.dto'
 import { GetHistoryDataDto } from './dto/get-history-data.dto'
+import { ListMiddleScreenStatusDto } from './dto/list-middle-screen-status.dto'
 
 @Controller('api/shaoshan')
 export class ShaoshanController {
@@ -54,7 +55,13 @@ export class ShaoshanController {
   // 查询中屏表格数据
   @Get('middle-screen/page')
   getMiddleScreenPageData(@Query() dto: PageMiddleScreenDataDto) {
-    return this.shaoshanService.getMiddleScreenPageData(dto)
+    return this.shaoshanService.pageMiddleScreenData(dto)
+  }
+
+  // 查询中屏顶部状态信息
+  @Get('middle-screen/status')
+  getMiddleScreenTopStatus(@Query() dto: ListMiddleScreenStatusDto) {
+    return this.shaoshanService.listMiddleScreenStatus(dto)
   }
 
   // 查询指定测点的历史数据

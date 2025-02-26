@@ -5,6 +5,7 @@ import { ShaoshanExternalApiService } from '../shared/service/shaoshan-external-
 import { GetHistoryDataDto } from './dto/get-history-data.dto'
 import * as dayjs from 'dayjs'
 import { BadRequestException } from '../core/exception/custom-exception'
+import { ListMiddleScreenStatusDto } from './dto/list-middle-screen-status.dto'
 
 type PageMiddleScreenData = (typeof middleScreenData)[0] & {
   value?: number
@@ -18,7 +19,7 @@ export class ShaoshanService {
   ) {}
 
   // 查询关键数据监测列表
-  async getMiddleScreenPageData(dto: PageMiddleScreenDataDto) {
+  async pageMiddleScreenData(dto: PageMiddleScreenDataDto) {
     const { pn, ps, area, dataName, isTop, deviceName } = dto
 
     let data = middleScreenData
@@ -95,5 +96,45 @@ export class ShaoshanService {
     })
 
     return res[0]
+  }
+
+  async listMiddleScreenStatus(dto: ListMiddleScreenStatusDto) {
+    const measurementPoints = [
+      {
+        key: '3940650449895437',
+        area: '极Ⅰ低端',
+        deviceName: '阀内冷水系统'
+      },
+      {
+        key: '3940650441834509',
+        area: '极Ⅰ高端',
+        deviceName: '阀内冷水系统'
+      },
+      {
+        key: '3940650457956365',
+        area: '极Ⅱ高端',
+        deviceName: '阀内冷水系统'
+      },
+      {
+        key: '3940650466017293',
+        area: '极Ⅱ低端',
+        deviceName: '阀内冷水系统'
+      }
+    ].filter(({ area }) => dto.area === area)
+
+    const res = await this.shaoShanExternalService.getRealtimeData(
+      measurementPoints.map((item) => item.key)
+    )
+
+    return measurementPoints.map(({ key, area, deviceName }) => {
+      const data = res.find((item) => item.key === key)
+      return {
+        key,
+        area,
+        deviceName,
+        value: data?.value,
+        timestamp: data?.time_stamp
+      }
+    })
   }
 }

@@ -41,6 +41,12 @@ export const HomePage: FC = () => {
   const [deviceData, setDeviceData] = useState<string[]>([])
   const [tableData, setTableData] = useState<any>()
   const [topData, setTopData] = useState<any>()
+  const [statusData, setStatusData] = useState<
+    {
+      deviceName: string
+      value: number
+    }[]
+  >([])
 
   const [device, setDevice] = useState<string>('设备名')
   const [searchKey, setSearchKey] = useState<string>('')
@@ -64,6 +70,7 @@ export const HomePage: FC = () => {
     setDevice(deviceData?.[0])
     setSearchKey('')
     setPageInfo((v) => ({ ...v, pn: 1 }))
+    listMiddleScreenStatus(v.key)
     getMiddleScreenPage(
       {
         area: v.key,
@@ -74,6 +81,11 @@ export const HomePage: FC = () => {
       },
       true
     )
+  }
+
+  const listMiddleScreenStatus = async (area: string) => {
+    const res = await api.listMiddleScreenStatus({ area })
+    setStatusData(res.data)
   }
 
   const getMiddleScreenPage = (
@@ -268,14 +280,16 @@ export const HomePage: FC = () => {
               <div>{v.value?.toFixed(2)}</div>
             </div>
           ))}
-          {/*<div className={styles.dataItem}>*/}
-          {/*  <div className={styles.dataTitle}>数据4：</div>*/}
-          {/*  <div className={styles.dataTagSuccess}>正常</div>*/}
-          {/*</div>*/}
-          {/*<div className={styles.dataItem}>*/}
-          {/*  <div className={styles.dataTitle}>数据4：</div>*/}
-          {/*  <div className={styles.dataTagError}>异常</div>*/}
-          {/*</div>*/}
+          {statusData.map((status) => (
+            <div className={styles.dataItem}>
+              <div className={styles.dataTitle}>{status.deviceName}：</div>
+              {status.value === 1 ? (
+                <div className={styles.dataTagSuccess}>正常</div>
+              ) : (
+                <div className={styles.dataTagError}>异常</div>
+              )}
+            </div>
+          ))}
         </div>
 
         <div className={styles.searchWrap}>

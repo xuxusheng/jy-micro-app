@@ -95,7 +95,10 @@ export class ShaoshanExternalApiService {
   }
 
   // 批量查询实时数据
-  getRealtimeData = async (keys: string[]) => {
+  getRealtimeData = async (
+    keys: string[],
+    datatype: 'datatype' | 'state' = 'datatype'
+  ) => {
     const { url, hwID, hwAppKey, clientId } = this.shaoshanConf
 
     // 如果 debug，随机返回
@@ -126,7 +129,7 @@ export class ShaoshanExternalApiService {
       id: Math.floor(Math.random() * 2147483647),
       client_id: clientId,
       body: {
-        datatype: 'analog',
+        datatype,
         keys
       }
     }
